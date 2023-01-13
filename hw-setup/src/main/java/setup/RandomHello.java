@@ -19,10 +19,12 @@ public class RandomHello {
     public String getGreeting() {
         // YOUR CODE GOES HERE
         Random randomGenerator = new Random();
-        String[] greetings = new String[3];
+        String[] greetings = new String[5];
         greetings[0] = "Ni Hao";
         greetings[1] = "Hello World";
         greetings[2] = "Bonjour Monde";
-        return greetings[randomGenerator.nextInt(3)];
+        greetings[3] = "Hallo Welt";
+        greetings[4] = "Ciao Mondo";
+        return greetings[randomGenerator.nextInt(5)];
     }
 }
