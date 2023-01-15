@@ -3,16 +3,17 @@
 
 1. Why did Fibonacci fail the testThrowsIllegalArgumentException< test? What (if anything) did
 you have to do to fix it? If you did not have to change anything to fix this issue, explain why.
-
-
+The test was failing because the program was throwing an exception when the input value was less
+than or equal to zero, even though the specification said "nonnegative number". Thus, I just changed
+the checking condition to solely less than zero.
 
 2. Why did Fibonacci fail the testBaseCase test? What (if anything) did you have to do to fix
 it? If you did not have to change anything to fix this issue, explain why.
-
-
+It didn't fail the testBaseCase test - if the input was less than two the program automatically
+returned 1 which is the correct number for both the 0 and 1 cases.
 
 3.Why did Fibonacci fail the testInductiveCase test? What (if anything) did you have to do to
 fix it? If you did not have to change anything to fix this issue, explain why.
-
-
-
+I had to change the program to check if the input is less than 2 instead of less than or equal
+to 2 because 2 doesn't evaluate to 1. I also had to change the inductive (recursive) calls to
+being added to each other because that is how the fibonacci sequence works
