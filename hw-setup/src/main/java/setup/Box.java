@@ -36,6 +36,7 @@ public class Box implements Iterable<Ball> {
     public Box(double maxVolume) {
         // Your code goes here.  Remove the exception after you're done.
         this.maxVolume = maxVolume;
+        ballContainer = new BallContainer();
     }
 
     /**
@@ -89,7 +90,7 @@ public class Box implements Iterable<Ball> {
         while (itr.hasNext()){
             Ball b = itr.next();
             test.add(b);
-        };
+        }
         Collections.sort(test, new BallSorter());
         return test.iterator();
     }
