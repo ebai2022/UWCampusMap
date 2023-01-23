@@ -76,7 +76,13 @@ public final class RatTerm {
      */
     public RatTerm(RatNum c, int e) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.constructor is not yet implemented");
+        coeff = c;
+        if (c.equals(RatNum.ZERO)){
+            expt = 0;
+        } else{
+            expt = e;
+        }
+        checkRep();
     }
 
     /**
@@ -94,7 +100,7 @@ public final class RatTerm {
      */
     public RatNum getCoeff() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.getCoeff() is not yet implemented");
+        return coeff;
     }
 
     /**
@@ -104,7 +110,7 @@ public final class RatTerm {
      */
     public int getExpt() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.getExpt() is not yet implemented");
+        return expt;
     }
 
     /**
@@ -114,7 +120,7 @@ public final class RatTerm {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.isNaN() is not yet implemented");
+        return coeff.equals(RatNum.NaN);
     }
 
     /**
@@ -124,7 +130,7 @@ public final class RatTerm {
      */
     public boolean isZero() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.isZero() is not yet implemented");
+        return coeff.equals(RatNum.ZERO);
     }
 
     /**
@@ -137,7 +143,11 @@ public final class RatTerm {
     public double eval(double d) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Hint: You may find java.lang.Math's pow() method useful.
-        throw new RuntimeException("RatTerm.eval() is not yet implemented");
+        if (isNaN()){
+            return Double.NaN;
+        } else{
+            return coeff.doubleValue() * Math.pow(d, expt);
+        }
     }
 
     /**
@@ -147,7 +157,11 @@ public final class RatTerm {
      */
     public RatTerm negate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.negate() is not yet implemented");
+        if (isNaN()){
+            return RatTerm.NaN;
+        } else{
+            return new RatTerm(coeff.negate(), getExpt());
+        }
     }
 
     /**
@@ -161,7 +175,12 @@ public final class RatTerm {
      */
     public RatTerm add(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.add() is not yet implemented");
+        if (expt != arg.expt && !isZero() && !arg.isZero() && !isNaN() && !arg.isNaN()){
+            throw new IllegalArgumentException();
+        } else if (isZero()){
+            return new RatTerm(coeff.add(arg.coeff), arg.expt);
+        }
+        return new RatTerm(coeff.add(arg.coeff), expt);
     }
 
     /**
@@ -175,7 +194,7 @@ public final class RatTerm {
      */
     public RatTerm sub(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.sub() is not yet implemented");
+        return this.add(arg.negate());
     }
 
     /**
@@ -187,7 +206,10 @@ public final class RatTerm {
      */
     public RatTerm mul(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.mul() is not yet implemented");
+        if (isNaN() || arg.isNaN()){
+            return RatTerm.NaN;
+        }
+        return new RatTerm(coeff.mul(arg.coeff), expt + arg.expt);
     }
 
     /**
@@ -200,7 +222,10 @@ public final class RatTerm {
      */
     public RatTerm div(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.div() is not yet implemented");
+        if (arg.isZero() || arg.isNaN() || isNaN()){
+            return RatTerm.NaN;
+        }
+        return new RatTerm(coeff.div(arg.coeff), expt - arg.expt);
     }
 
     /**

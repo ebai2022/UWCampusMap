@@ -64,16 +64,17 @@ Since numer and denom are both declared final and private, the constructor check
 ###########################################################################
 
 1. Calls to checkRep in RatTerm
-
-
+I only included it at tne end of my constructor because both coeff and expt are declared as final and private, meaning the only place they can be assigned are in the constructor. Thus, after the constructor assignments, they will never be changed, so I don't need to checkRep in my other methods
 
 2. Weakened Rep Invariant
-
-
+The RatNum constructor would no longer need to set the expt to 0. This barely has any effect on the efficiency of the constructor but decreases the overall performance of the program as other methods will have to do more internal calculations
+The equals method would have to contain another check for if the coefficients of both RatTerms are zero instead of just checking if the expt and coeff are equal. This would be slightly more inefficient as there would be more cases to check for
+The toString method would require an additional check to see if coeff is zero. This would slightly decrease the efficiency of the program as it would require an additional case
+checkRep would no longer need to check if the exponent is zero when the coefficient is zero, which would slightly increase the efficiency
 
 3. Alternate Rep Invariant
-
-
+The RatNum constructor would have to check if the coeff is NaN and set expt to zero. This extra check would slightly decrease the efficiency
+checkRep would have to check if the expt of coeff with NaN are equal to zero. This extra check would slightly decrease the efficiency
 
 4. Preferred Invariants
 
