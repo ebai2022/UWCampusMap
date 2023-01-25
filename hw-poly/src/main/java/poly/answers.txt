@@ -58,13 +58,13 @@ checkRep just changes to check if the denominator is greater than or equal to 0.
 Since there is no @spec.effects clauses on the four methods in question, they should not be changing the current object. The implementation in question would directly modify the current object, which fail to meet the documented (or undocumented) method specifications. Also, the class specification says that RatNum represents an immutable rational number, meaning that these 4 methods aren't allowed to change the object itself.
 
 3. Constructor checkReps
-Since numer and denom are both declared final and private, the constructor checks are sufficient because private means that only methods within RatNum have the possibility of modifying the two variables and final means that the constructor is the only place where the variables can be assigned. This effectively prevents any modification of numer and demon, meaning we only need to checkRep at the end of the constructor because they are unchangeable by other methods.
+Since numer and denom are both declared final and private and are both primitives, the constructor checks are sufficient because private means that only methods within RatNum have the possibility of modifying the two variables and final means that the constructor is the only place where the variables can be assigned. This effectively prevents any modification of numer and demon, meaning we only need to checkRep at the end of the constructor because they are unchangeable by other methods.
 
 ## Part 2
 ###########################################################################
 
 1. Calls to checkRep in RatTerm
-I only included it at tne end of my constructor because both coeff and expt are declared as final and private, meaning the only place they can be assigned are in the constructor. Thus, after the constructor assignments, they will never be changed, so I don't need to checkRep in my other methods
+I only included it at tne end of my constructor because both coeff and expt are declared as final and private, and expt is a primitive and coeff is a RatNum which is immutable, meaning the only place they can be assigned are in the constructor. Thus, after the constructor assignments, they will never be changed, so I don't need to checkRep in my other methods
 
 2. Weakened Rep Invariant
 The RatNum constructor would no longer need to set the expt to 0. This barely has any effect on the efficiency of the constructor but decreases the overall performance of the program as other methods will have to do more internal calculations
@@ -75,11 +75,6 @@ checkRep would no longer need to check if the exponent is zero when the coeffici
 3. Alternate Rep Invariant
 The RatNum constructor would have to check if the coeff is NaN and set expt to zero. This extra check would slightly decrease the efficiency
 checkRep would have to check if the expt of coeff with NaN are equal to zero. This extra check would slightly decrease the efficiency
-
-4. Preferred Invariants
-
-
-
 
 ## Part 3
 ###########################################################################
