@@ -168,7 +168,7 @@ public final class RatPoly {
      */
     public RatTerm getTerm(int deg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        //write inv, with checked terms not being the degree
+        //inv: this[0...i-1] does not contain deg where i starts at index 0 and indicates the current term's index
         for (RatTerm term: terms){
             if (term.getExpt() == deg){
                 return term;
@@ -184,7 +184,7 @@ public final class RatPoly {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        // write
+        //inv: this[0...i-1] is not NaN where i starts at index 0 and indicates the current term's index
         for (RatTerm term: terms){
             if (term.isNaN()){
                 return true;
@@ -207,7 +207,7 @@ public final class RatPoly {
     private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
         // TODO: Fill in this method as specified, modify it to your liking, or remove it.
         // Do not leave this method as-is. You must either use it somehow or remove it.
-        // write inv
+        //inv: terms in lst[0...i-1] = RatTerm at i * RatNum scalar
         for (int i = 0; i < lst.size(); i++){
             lst.set(i, lst.get(i).mul(new RatTerm(scalar, 0)));
         }
@@ -227,9 +227,12 @@ public final class RatPoly {
     private static void incremExpt(List<RatTerm> lst, int degree) {
         // TODO: Fill in this method as specified, modify it to your liking, or remove it.
         // Do not leave this method as-is. You must either use it somehow or remove it.
-        // write inv
+        //inv: terms in lst[0...i-1] = RatTerm at i * x^degree && expts in terms >= 0
         for (int i = 0; i < lst.size(); i++){
             lst.set(i, lst.get(i).mul(new RatTerm(new RatNum(1), degree)));
+            if (lst.get(i).getExpt() < 0){
+                lst.remove(i);
+            }
         }
     }
 
@@ -256,28 +259,20 @@ public final class RatPoly {
     private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        // can add nan's!
         if (!newTerm.isZero()) {
-            boolean finish = false;
             int i = 0;
-            //inv newTerm.getExpt() > lst.get(i).getExpt() && i < lst.size()
-            while (i != lst.size() && !finish) {
-                if (lst.get(i).getExpt() <= newTerm.getExpt()) {
-                    finish = true;
-                } else {
-                    i++;
-                }
+            //do i need an inv?
+            while (i != lst.size() && lst.get(i).getExpt() > newTerm.getExpt()) {
+                i++;
             }
-            if (i == lst.size() || i == 0) {
+            if (i == lst.size() || lst.get(i).getExpt() != newTerm.getExpt()) {
                 lst.add(i, newTerm);
-            } else if (lst.get(i).getExpt() == newTerm.getExpt()) {
+            } else {
                 if (lst.get(i).add(newTerm).isZero()) {
                     lst.remove(i);
                 } else {
                     lst.set(i, lst.get(i).add(newTerm));
                 }
-            } else {
-                lst.add(i - 1, newTerm);
             }
         }
     }
@@ -290,15 +285,17 @@ public final class RatPoly {
     public RatPoly negate() {
     	// TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        //insert hella check reps
-        if (this.isNaN()){
+        checkRep();
+        if (isNaN()){
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        // write inv
-        for (int i = 0; i < terms.size(); i++){
-            temp.add(i, terms.get(i).negate());
+        //inv: temp = this[0...i-1] where i starts at index 0 and indicates the current term's index
+        for (RatTerm t : terms){
+            temp.add(t);
         }
+        scaleCoeff(temp, new RatNum(-1));
+        checkRep();
         return new RatPoly(temp);
     }
 
@@ -312,21 +309,20 @@ public final class RatPoly {
      */
     public RatPoly add(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        //check rep
-        // is this a new arraylist<ratpoly> with all elements added?
-        //do i even need this check
-        if (this.isNaN() || p.isNaN()){
+        checkRep();
+        if (isNaN() || p.isNaN()){
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        //write rep
-        // asjdlkfjsalkgjsat this is just wrong
+        //inv: temp = this[0...i-1]
         for (int i = 0; i < terms.size(); i++){
             sortedInsert(temp, terms.get(i));
         }
+        //inv: temp = this[0...i-1] + terms in p[0...i-1]
         for (int i = 0; i < p.terms.size(); i++){
             sortedInsert(temp, p.terms.get(i));
         }
+        checkRep();
         return new RatPoly(temp);
     }
 
@@ -341,20 +337,8 @@ public final class RatPoly {
     public RatPoly sub(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        if (this.isNaN() || p.isNaN()){
-            return RatPoly.NaN;
-        }
-        List<RatTerm> temp = new ArrayList<>();
-        //write rep
-        for (int i = 0; i < terms.size(); i++){
-            sortedInsert(temp, terms.get(i));
-        }
-        for (int i = 0; i < p.terms.size(); i++){
-            sortedInsert(temp, p.terms.get(i).negate());
-        }
-        //need to check if something goes to 0? or other booms
-        // other booms like them not having the same exponent at the same index...fajsldkgjalskdga
-        return new RatPoly(temp);
+        checkRep();
+        return add(p.negate());
     }
 
     /**
@@ -367,19 +351,19 @@ public final class RatPoly {
      */
     public RatPoly mul(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        //hella check rep
-        if (this.isNaN() || p.isNaN()){
+        checkRep();
+        if (isNaN() || p.isNaN()){
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        //write rep
+        // inv :
         for (int i = 0; i < terms.size(); i++){
             for (int j = 0; j < p.terms.size(); j++){
                 sortedInsert(temp, terms.get(i).mul(p.terms.get(j)));
             }
         }
+        checkRep();
         return new RatPoly(temp);
-        //hella check reps
     }
 
     /**
@@ -418,22 +402,20 @@ public final class RatPoly {
      */
     public RatPoly div(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        //hella check rep
-        if (this.isNaN() || p.isNaN() || p.terms.size() == 0){
+        checkRep();
+        if (isNaN() || p.isNaN() || p.terms.size() == 0){
             return RatPoly.NaN;
         }
-        List<RatTerm> temp = new ArrayList<>();
-        //write rep
-        RatPoly pterm = this;
-        RatPoly qterm = p;
-        while (qterm.degree() <= pterm.degree()){
-            RatTerm t = qterm.getTerm(qterm.degree());
-            RatPoly x = qterm.mul(new RatPoly(t));
-            pterm.add(x.negate());
-            sortedInsert(temp, t);
+        List<RatTerm> ans = new ArrayList<>();
+        RatPoly remain = this;
+        //inv: this = terms in ans * terms in p + terms in remain
+        while (remain.degree() >= p.degree() && !remain.getTerm(remain.degree()).isZero()){
+            RatTerm multiply = remain.getTerm(remain.degree()).div(p.getTerm(p.degree()));
+            sortedInsert(ans, multiply);
+            remain = remain.sub(p.mul(new RatPoly(multiply)));
         }
-        return new RatPoly(temp);
-        //hella check reps
+        checkRep();
+        return new RatPoly(ans);
     }
 
     /**
@@ -445,13 +427,16 @@ public final class RatPoly {
      */
     public double eval(double d) {
         // TODO: Fill in this method, then remove the RuntimeException
-        if (this.isNaN()){
+        checkRep();
+        if (isNaN()){
             return Double.NaN;
         }
         double total = 0.0;
+        //inv: total = coeff of this[0...i-1] * d^expt of this[0...i-1]
         for (int i = 0; i < terms.size(); i++){
             total += terms.get(i).getCoeff().doubleValue() * Math.pow(d, terms.get(i).getExpt());
         }
+        checkRep();
         return total;
     }
 

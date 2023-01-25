@@ -14,36 +14,34 @@ r = p * q:
 		add x to r using polynomial addition
 
 2. Division Pseudocode
-r = p / q:
-    set r = 0
-    {inv: r = p_pre/q + p/q}
-    while degree of leading term of q <= degree of leading term of p:
-        set t = leading term of q / leading term of p  (CHECK IF THIS NEEDS TO BE DEFINED)
-        set x = q * (t as a polynomial)
-        p += (x * -1x^0)
-        r += t as a polynomial
+ans = p / q:
+    ans = 0x^0
+    rem = p
+    {inv: p_pre = ans * q + rem}
+    while degree of leading term of rem >= degree of leading term of q && rem != 0:
+        set mul = leading term of rem / leading term of q
+        ans += mul
+        rem -= mul * q
 
 3. Division Example: (x3+x-1) / (x+1) = x2-x+2
 p = x^3+x-1
 q = x+1
-r = 0
-while degree of leading term of q <= degree of leading term of p (YES: 1 <= 3):
-    t = x^2
-    x = (x+1)(x^2) = x^3 + x^2
-    p += -x^3 - x^2 (p = -x^2+x-1)
-    r += x^2
-    while degree of leading term of q <= degree of leading term of p (YES: 1 <= 2):
-        t = -x
-        x = (x+1)(-x) = -x^2 - x
-        p += x^2 + x (p = 2x-1)
-        r += -x (r = x^2-x)
-        while degree of leading term of q <= degree of leading term of p (YES: 1 <= 1):
-            t = 2
-            x = (x+1)(2) = 2x+2
-            p += -2x-2 (p = -3)
-            r += 2 (r = x^2-x+2)
-            while degree of leading term of q <= degree of leading term of p (FALSE: 1 > 0)
-            We are done! r = x^2-x+2
+ans = 0x^0
+rem = x^3+x-1
+while degree of leading term of rem >= degree of leading term of q && rem != 0 (YES: 3 >= 1):
+    mul = x^3 / x = x^2
+    ans += x^2 so ans = x^2
+    rem -= x^2 * x+1 = x^3+x^2 so rem = -x^2+x-1
+    while degree of leading term of rem >= degree of leading term of q && rem != 0 (YES: 2 >= 1):
+        mul = -x^2 / x = -x
+        ans += -x so ans = x^2 - x
+        rem -= -x * x+1 = -x^2-x so rem = 2x-1
+        while degree of leading term of rem >= degree of leading term of q && rem != 0 (YES: 1 >= 1):
+            mul = 2x / x = 2
+            ans += 2 so ans = x^2-x+2
+            rem -= 2 * x+1 = 2x+2 so rem = -3
+            while degree of leading term of rem >= degree of leading term of q && rem != 0 (FALSE: 0 < 1)
+            We are done! ans = x^2-x+2
 
 ## Part 1
 ###########################################################################
@@ -80,10 +78,9 @@ checkRep would have to check if the expt of coeff with NaN are equal to zero. Th
 ###########################################################################
 
 1. Calls to checkRep in RatPoly
-
-
+I decided to call checkRep at the end of all my constructors and at the beginning and end of all my public methods. This way I can immediately know where I have made a mistake no matter which method my rep invariant is broken in
 
 2. Alternate Representation
-
+The advantage is that we can now easily access the degree and the coefficient separately as RatNums and ints instead of RatTerms, meaning that it would be more efficient to access these properties of a polynomial. The disadvantage is that if we are making changes to the polynomial (e.g. adding polynomials to each other), we would have to edit two different lists and also take in two different lists to perform the addition, leading to a less efficient program. I prefer the list of RatTerms approach as it feels very concise and closer to a human representation (ax^b) instead of (a and b relating to x)
 
 
