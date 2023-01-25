@@ -152,9 +152,11 @@ public final class RatPoly {
      */
     public int degree() {
         // TODO: Fill in this method, then remove the RuntimeException
+        checkRep();
         if (terms.size() == 0){
             return 0;
         }
+        checkRep();
         return terms.get(0).getExpt();
     }
 
@@ -168,12 +170,15 @@ public final class RatPoly {
      */
     public RatTerm getTerm(int deg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        //inv: this[0...i-1] does not contain deg where i starts at index 0 and indicates the current term's index
-        for (RatTerm term: terms){
+        checkRep();
+        //inv: this[0...i-1] does not contain deg
+        for (int i = 0; i < terms.size(); i++){
+            RatTerm term = terms.get(i);
             if (term.getExpt() == deg){
                 return term;
             }
         }
+        checkRep();
         return RatTerm.ZERO;
     }
 
@@ -184,12 +189,15 @@ public final class RatPoly {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        //inv: this[0...i-1] is not NaN where i starts at index 0 and indicates the current term's index
-        for (RatTerm term: terms){
+        //inv: this[0...i-1] does not contain any NaN terms
+        checkRep();
+        for (int i = 0; i < terms.size(); i++){
+            RatTerm term = terms.get(i);
             if (term.isNaN()){
                 return true;
             }
         }
+        checkRep();
         return false;
     }
 
@@ -290,9 +298,10 @@ public final class RatPoly {
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        //inv: temp = this[0...i-1] where i starts at index 0 and indicates the current term's index
-        for (RatTerm t : terms){
-            temp.add(t);
+        //inv: temp = this[0...i-1]
+        for (int i = 0; i < terms.size(); i++){
+            RatTerm term = terms.get(i);
+            temp.add(term);
         }
         scaleCoeff(temp, new RatNum(-1));
         checkRep();
@@ -356,10 +365,13 @@ public final class RatPoly {
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        // inv :
+        //inv: temp = terms_0 + terms_1 + ... + terms_i where terns_i is the ith term in terms
         for (int i = 0; i < terms.size(); i++){
+            RatTerm r = terms.get(i);
+            //inv: t = p_0 + p_1 + ... + p_i where p_i is the ith term in p
             for (int j = 0; j < p.terms.size(); j++){
-                sortedInsert(temp, terms.get(i).mul(p.terms.get(j)));
+                RatTerm t = p.terms.get(j);
+                sortedInsert(temp, r.mul(t));
             }
         }
         checkRep();
