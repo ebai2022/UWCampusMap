@@ -5,7 +5,7 @@
 1. Multiplication Pseudocode
 r = p * q:
 	set r = 0
-	{inv: r = (p_0 + p_1 + ... + p_i) * q where p_i is the ith term in p}
+	{inv: r = (p_0 + p_1 + ... + p_i-1) * q where p_i is the ith term in p}
 	foreach term, t_p in p:
 	    {inv2: x = t_p * (q_0 + ... + q_j-1)}
 		foreach term, t_q in q:
