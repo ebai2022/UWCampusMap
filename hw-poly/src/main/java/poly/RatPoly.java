@@ -269,7 +269,7 @@ public final class RatPoly {
         // Note: Some of the provided code in this class relies on this method working as-specified.
         if (!newTerm.isZero()) {
             int i = 0;
-            //do i need an inv?
+            //inv: degree of newTerm <= degree of lst(i-1)
             while (i != lst.size() && lst.get(i).getExpt() > newTerm.getExpt()) {
                 i++;
             }
@@ -365,10 +365,10 @@ public final class RatPoly {
             return RatPoly.NaN;
         }
         List<RatTerm> temp = new ArrayList<>();
-        //inv: temp = terms_0 + terms_1 + ... + terms_i-1 where terns_i is the ith term in terms
+        //inv1: temp = terms_0 + terms_1 + ... + terms_i-1 where terns_i is the ith term in terms
         for (int i = 0; i < terms.size(); i++){
             RatTerm r = terms.get(i);
-            //inv: t = p_0 + p_1 + ... + p_i where p_i-1 is the ith term in p
+            //inv2: t = p_0 + p_1 + ... + p_i where p_i-1 is the ith term in p
             for (int j = 0; j < p.terms.size(); j++){
                 RatTerm t = p.terms.get(j);
                 sortedInsert(temp, r.mul(t));
