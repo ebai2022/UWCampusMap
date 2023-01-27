@@ -189,8 +189,8 @@ public final class RatPoly {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        //inv: this[0...i-1] does not contain any NaN terms
         checkRep();
+        //inv: this[0...i-1] does not contain any NaN terms
         for (int i = 0; i < terms.size(); i++){
             RatTerm term = terms.get(i);
             if (term.isNaN()){
@@ -199,49 +199,6 @@ public final class RatPoly {
         }
         checkRep();
         return false;
-    }
-
-    /**
-     * Scales coefficients within 'lst' by 'scalar' (helper procedure).
-     *
-     * @param lst    the RatTerms to be scaled
-     * @param scalar the value by which to scale coefficients in lst
-     * @spec.requires lst, scalar != null
-     * @spec.modifies lst
-     * @spec.effects Forall i s.t. 0 <= i < lst.size(), if lst.get(i) = (C . E) then lst_post.get(i) =
-     * (C*scalar . E).
-     * @see RatTerm regarding (C . E) notation
-     */
-    private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        //inv: terms in lst[0...i-1] = RatTerm at i * RatNum scalar
-        for (int i = 0; i < lst.size(); i++){
-            lst.set(i, lst.get(i).mul(new RatTerm(scalar, 0)));
-        }
-    }
-
-    /**
-     * Increments exponents within 'lst' by 'degree' (helper procedure).
-     *
-     * @param lst    the RatTerms whose exponents are to be incremented
-     * @param degree the value by which to increment exponents in lst
-     * @spec.requires lst != null
-     * @spec.modifies lst
-     * @spec.effects Forall i s.t. 0 <= i < lst.size(), if (C . E) = lst.get(i) then lst_post.get(i) =
-     * (C . E+degree).
-     * @see RatTerm regarding (C . E) notation
-     */
-    private static void incremExpt(List<RatTerm> lst, int degree) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        //inv: terms in lst[0...i-1] = RatTerm at i * x^degree && expts in terms >= 0
-        for (int i = 0; i < lst.size(); i++){
-            lst.set(i, lst.get(i).mul(new RatTerm(new RatNum(1), degree)));
-            if (lst.get(i).getExpt() < 0){
-                lst.remove(i);
-            }
-        }
     }
 
     /**
@@ -294,18 +251,7 @@ public final class RatPoly {
     	// TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
         checkRep();
-        if (isNaN()){
-            return RatPoly.NaN;
-        }
-        List<RatTerm> temp = new ArrayList<>();
-        //inv: temp = this[0...i-1]
-        for (int i = 0; i < terms.size(); i++){
-            RatTerm term = terms.get(i);
-            temp.add(term);
-        }
-        scaleCoeff(temp, new RatNum(-1));
-        checkRep();
-        return new RatPoly(temp);
+        return this.mul(new RatPoly(new RatTerm(new RatNum(-1), 0)));
     }
 
     /**

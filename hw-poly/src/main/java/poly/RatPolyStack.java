@@ -146,7 +146,9 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      */
     public void clear() {
        // TODO: Fill in this method, then remove the RuntimeException
+        checkRep();
         polys.clear();
+        checkRep();
     }
 
     /**

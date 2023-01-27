@@ -59,6 +59,8 @@ reduced form. The original implementation would be more efficient here since tha
 handled in the constructor.
 checkRep just changes to check if the denominator is greater than or equal to 0. Advantages and disadvantages are
 written above since checkRep doesn't directly modify anything.
+The hashCode method would need to reduce the fraction because otherwise we would get different
+hash codes for the same number. This reduction would slightly decrease the efficiency of the program.
 
 2. Alternate add, sub, mul, div
 Since there is no @spec.effects clauses on the four methods in question, they should not be changing the current
@@ -93,6 +95,10 @@ The toString method would require an additional check to see if coeff is zero. T
 efficiency of the program as it would require an additional case.
 checkRep would no longer need to check if the exponent is zero when the coefficient is zero, which would slightly
 increase the efficiency.
+The hashCode method would need to set the expt to zero if the coeff is zero because otherwise we would get different
+hash codes for the same number. This reduction would slightly decrease the efficiency of the program.
+The valueOf method would no longer need to set the expt equal to zero, which would slightly increase the efficiency
+of the program.
 
 3. Alternate Rep Invariant
 The RatNum constructor would have to check if the coeff is NaN and set expt to zero. This extra check would
@@ -105,7 +111,9 @@ decrease the efficiency.
 
 1. Calls to checkRep in RatPoly
 I decided to call checkRep at the end of all my constructors and at the beginning and end of all my public methods.
-This way I can immediately know where I have made a mistake no matter which method my rep invariant is broken in.
+This way I can immediately know where I have made a mistake no matter which method my rep invariant is broken in. We
+need to check this because terms is a possibly mutable list, meaning that its state might change throughout the program
+and violate the rep invariant
 
 2. Alternate Representation
 The advantage is that we can now easily access the degree and the coefficient separately as RatNums and ints instead
