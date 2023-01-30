@@ -8,7 +8,18 @@ interface to a graph. If your design includes multiple classes or interfaces, ex
 included each one; if not, explain whether you considered additional classes and why you decided
 not to include them.
 
-
+I included the zero argument constructor just to initialize the state of the graph. addNode and addEdge
+are all we need to be able to construct a graph from scratch, since it will allow us to add new nodes and
+link existing ones. listChildren shows us all the children of a parent node, which will be useful when we
+want to see where the edges of a parent node are going to. listNodes is great for seeing all the nodes in
+the graph, giving us an overview of the entire graph. These 5 base methods are enough to ensure a sufficient
+graph interface as they can set up all the basic functions of the graph and give the client a baseline of
+information of what is in the graph. toString is added on top of these 5 base methods because we want to be
+able to have our own string representation of our objects instead of using javas base one. I did consider
+using additional classes, like using a subclass that represents a node of the graph, but I decided to not
+include it because there's no added functionality I can see for having a node that is separate from the overall
+graph class, because all it would store is a string of the node data and a map containing its children and
+lists of edges to those children, all which can be done within graph without having an additional subclass.
 
 
 ## Part 2
