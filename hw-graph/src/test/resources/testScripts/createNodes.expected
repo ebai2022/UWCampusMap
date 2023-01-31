@@ -1,0 +1,9 @@
+# Test node creation
+
+# Test single case
+created graph A
+added node e1 to A
+
+# Test multi case
+added node e2 to A
+added node e3 to A

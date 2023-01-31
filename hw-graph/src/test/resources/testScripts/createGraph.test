@@ -1,0 +1,9 @@
+# Test graph creation
+
+# Single graph creation
+CreateGraph perkins
+
+# Double graph creation
+CreateGraph is
+CreateGraph pretty
+CreateGraph funny

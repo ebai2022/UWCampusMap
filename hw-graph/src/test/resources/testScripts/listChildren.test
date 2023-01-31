@@ -1,0 +1,22 @@
+# Test list children
+
+# Test empty case aka island
+CreateGraph A
+AddNode A e1
+ListChildren A e1
+
+# Test single case
+AddNode A e2
+AddEdge A e1 e2 test
+ListChildren A e1
+
+# Test multi case
+AddNode A e3
+AddNode A e4
+AddEdge A e3 e4 hello
+AddEdge A e4 e3 backwards
+AddEdge A e3 e1 multiple
+ListChildren A e1
+ListChildren A e2
+ListChildren A e3
+ListChildren A e4

@@ -21,7 +21,8 @@ public class graph {
      * @param parent the data that identifies the parent
      * @param child the data that identifies the child
      * @param label the data that represents the edge label
-     * @spec.requires parent, child, label != null, and graph must contain both the parent and child
+     * @spec.requires parent, child, label != null, graph must contain both the parent and child, and
+     * label must be unique between the parent and child node in graph
      * @spec.effects adds an edge with the label between the parent and the child
      */
     public void addEdge(String parent, String child, String label){
@@ -32,7 +33,7 @@ public class graph {
      * Adds a node to the graph
      *
      * @param data the data that represents the node
-     * @spec.requires data != null, graph does not contain a node contents equal to data
+     * @spec.requires data != null, graph does not contain a node with contents entirely equal to data
      * @spec.effects adds a node to the graph
      */
     public void addNode(String data){
@@ -57,13 +58,4 @@ public class graph {
      */
     public List<String> listNodes(){ throw new RuntimeException("method is not yet implemented"); }
 
-    /**
-     * Returns a string with information of the number of nodes and edges in this graph
-     *
-     * @return a String representing the number of nodes and edgesin this graph. Valid formats of strings
-     * include: "Graph has 37 nodes and 56 edges", "Graph has no nodes and no edges", "Graph has 1 node
-     * and no edges"
-     */
-    @Override
-    public String toString(){ throw new RuntimeException("method is not yet implemented"); }
 }

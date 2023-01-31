@@ -1,0 +1,22 @@
+# Test list children
+
+# Test empty case aka island
+created graph A
+added node e1 to A
+the children of e1 in A are:
+
+# Test single case
+added node e2 to A
+added edge test from e1 to e2 in A
+the children of e1 in A are: e2(test)
+
+# Test multi case
+added node e3 to A
+added node e4 to A
+added edge hello from e3 to e4 in A
+added edge backwards from e4 to e3 in A
+added edge multiple from e3 to e1 in A
+the children of e1 in A are:
+the children of e2 in A are:
+the children of e3 in A are:
+the children of e4 in A are:

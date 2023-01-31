@@ -1,0 +1,7 @@
+# Test edge creation
+
+# Test single case
+CreateGraph A
+AddNode A e1
+AddNode A e2
+AddEdge A e1 e2 test

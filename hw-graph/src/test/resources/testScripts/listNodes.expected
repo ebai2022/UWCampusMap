@@ -1,0 +1,14 @@
+# Test node listing
+
+# Test empty case
+created graph A
+A contains:
+
+# Test single case
+added node e1 to A
+A contains: e1
+
+# Test multi case
+added node e2 to A
+added node e3 to A
+A contains: e1 e2 e3
