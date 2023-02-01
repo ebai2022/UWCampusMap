@@ -1,0 +1,16 @@
+# Test a cyclic graph
+
+# Create a graph
+CreateGraph A
+
+# Add nodes
+AddNode A e1
+AddNode A e2
+
+# Add edges
+AddEdge A e1 e2 forwards
+AddEdge A e2 e1 backwards
+
+# Check if the graph is cyclic
+ListChildren A e1
+ListChildren A e2

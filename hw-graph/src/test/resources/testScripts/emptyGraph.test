@@ -1,0 +1,7 @@
+# Test empty graph behavior
+
+# Create a graph
+CreateGraph A
+
+# Check if there are any nodes
+ListNodes A

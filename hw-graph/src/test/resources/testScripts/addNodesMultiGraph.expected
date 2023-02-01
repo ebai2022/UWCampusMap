@@ -1,0 +1,15 @@
+# Test adding nodes to multiple graphs
+
+# Create multiple graphs
+created graph A
+created graph B
+
+# Add nodes
+added node e1 to B
+added node e2 to A
+added node e3 to A
+added node e4 to B
+
+# Check if the nodes have been added
+A contains: e2 e3
+B contains: e1 e4

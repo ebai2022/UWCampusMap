@@ -1,0 +1,7 @@
+# Test empty graph behavior
+
+# Create a graph
+created graph A
+
+# Check if there are any nodes
+A contains:

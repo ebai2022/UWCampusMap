@@ -1,0 +1,17 @@
+# Test graph with both islands and edges
+
+# Create a graph
+CreateGraph A
+
+# Add nodes
+AddNode A e1
+AddNode A e2
+AddNode A e3
+
+# Add edge
+AddEdge A e2 e3 connected
+
+# Check children
+ListChildren A e1
+ListChildren A e2
+ListChildren A e3

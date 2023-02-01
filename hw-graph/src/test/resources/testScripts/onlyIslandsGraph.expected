@@ -1,0 +1,12 @@
+# Test graph with islands behavior
+
+# Create a graph
+created graph A
+
+# Add nodes
+added node e1 to A
+added node e2 to A
+
+# Check if it is an island
+the children of e1 in A are:
+the children of e2 in A are:

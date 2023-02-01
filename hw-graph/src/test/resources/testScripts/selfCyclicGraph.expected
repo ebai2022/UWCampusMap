@@ -1,0 +1,13 @@
+# Test a cyclic graph
+
+# Create a graph
+created graph A
+
+# Add node
+added node e1 to A
+
+# Add edges
+added edge circle from e1 to e1 in A
+
+# Check if the graph is cyclic
+the children of e1 in A are: e1(circle)

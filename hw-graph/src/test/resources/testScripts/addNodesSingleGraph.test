@@ -1,0 +1,11 @@
+# Test adding nodes to a singular graph
+
+# Create a graph
+CreateGraph A
+
+# Add nodes
+AddNode A e1
+AddNode A e2
+
+# Check if the nodes have been added
+ListNodes A

@@ -1,0 +1,21 @@
+# Test edge creation with multiple graphs
+
+# Create graphs
+created graph A
+created graph B
+
+# Add nodes
+added node e1 to A
+added node e2 to A
+added node e3 to B
+added node e4 to B
+
+# Add edges
+added edge first from e1 to e2 in A
+added edge second from e3 to e4 in B
+
+# Check the edges
+the children of e1 in A are: e2(first)
+the children of e2 in A are:
+the children of e3 in B are: e4(second)
+the children of e4 in B are:

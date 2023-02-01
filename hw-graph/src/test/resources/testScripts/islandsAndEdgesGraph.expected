@@ -1,0 +1,17 @@
+# Test graph with both islands and edges
+
+# Create a graph
+created graph A
+
+# Add nodes
+added node e1 to A
+added node e2 to A
+added node e3 to A
+
+# Add edge
+added edge connect from e2 to e3 in A
+
+# Check children
+the children of e1 in A are:
+the children of e2 in A are: e3(connected)
+the children of e3 in A are:

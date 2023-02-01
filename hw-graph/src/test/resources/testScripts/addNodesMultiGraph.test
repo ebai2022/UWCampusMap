@@ -1,0 +1,15 @@
+# Test adding nodes to multiple graphs
+
+# Create multiple graphs
+CreateGraph A
+CreateGraph B
+
+# Add nodes
+AddNode B e1
+AddNode A e2
+AddNode A e3
+AddNode B e4
+
+# Check if the nodes have been added
+ListNodes A
+ListNodes B

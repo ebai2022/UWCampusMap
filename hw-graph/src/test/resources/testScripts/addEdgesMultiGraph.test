@@ -1,0 +1,21 @@
+# Test edge creation with multiple graphs
+
+# Create graphs
+CreateGraph A
+CreateGraph B
+
+# Add nodes
+AddNode A e1
+AddNode A e2
+AddNode B e3
+AddNode B e4
+
+# Add edges
+AddEdge A e1 e2 first
+AddEdge B e3 e4 second
+
+# Check the edges
+ListChildren A e1
+ListChildren A e2
+ListChildren B e3
+ListChildren B e4

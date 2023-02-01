@@ -3,7 +3,7 @@ package graph;
 import java.util.*;
 
 /**
- * graph represents a node that can be connected to other graphs by edges.
+ * graph represents a mutable collection of nodes and their respective edges that connect them
  */
 public class graph {
 
@@ -21,9 +21,9 @@ public class graph {
      * @param parent the data that identifies the parent
      * @param child the data that identifies the child
      * @param label the data that represents the edge label
-     * @spec.requires parent, child, label != null, graph must contain both the parent and child, and
+     * @spec.requires parent, child, label != null, graph must contain both the parent and child, and the
      * label must be unique between the parent and child node in graph
-     * @spec.effects adds an edge with the label between the parent and the child
+     * @spec.effects adds an edge with the label between the parent and the child nodes
      */
     public void addEdge(String parent, String child, String label){
         throw new RuntimeException("method is not yet implemented");
@@ -45,14 +45,14 @@ public class graph {
      *
      * @param parent the data that represents the parent
      * @return the list of children associated with the parent
-     * @spec.requires parent != null
+     * @spec.requires parent != null, graph contains parent
      */
     public List<String> listChildren(String parent){
         throw new RuntimeException("method is not yet implemented");
     }
 
     /**
-     * Gets the nodes contained within this graph
+     * Gets the nodes contained within the graph
      *
      * @return the list of nodes contained within this graph
      */

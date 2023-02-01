@@ -1,0 +1,11 @@
+# Test adding nodes to a singular graph
+
+# Create a graph
+created graph A
+
+# Add nodes
+added node e1 to A
+added node e2 to A
+
+# Check if the nodes have been added
+A contains: e1 e2

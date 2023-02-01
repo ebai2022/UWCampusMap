@@ -1,9 +1,0 @@
-# Test node creation
-
-# Test single case
-CreateGraph A
-AddNode A e1
-
-# Test multi case
-AddNode A e2
-AddNode A e3

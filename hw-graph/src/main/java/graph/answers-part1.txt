@@ -26,6 +26,15 @@ can be done within graph without having an additional subclass.
 
 What was your testing strategy for this assignment? How do your script tests and JUnit tests
 differ from each other (if they do), and why?
+My testing strategy for this assignment was to find all the general cases of different behaviors that might
+cause my code to fail in different ways and test each one of those. The tests were generally split between
+common cases (e.g. adding nodes to a single graph, adding nodes to multiple graphs at the same time) to
+more special cases (e.g. having a self cyclic graph where the edge points to the same node it comes from).
+Since I am not throwing any exceptions in my methods (and limiting my inputs by using specific spec requirements
+like requiring all the strings passed in to not be null), almost everything is put in my script tests because
+they can cover all the behavior I want to achieve. If I end up adding methods like containsNode or others like
+that, I would use junit to test those to make sure my output is what I want, but for now, all my methods are
+written with specs that are fully testable using script tests.
 
 
 

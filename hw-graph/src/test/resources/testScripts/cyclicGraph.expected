@@ -1,0 +1,16 @@
+# Test a cyclic graph
+
+# Create a graph
+created graph A
+
+# Add nodes
+added node e1 to A
+added node e2 to A
+
+# Add edges
+added edge forwards from e1 to e2 in A
+added edge backwards from e2 to e1 in A
+
+# Check if the graph is cyclic
+the children of e1 in A are: e2(forwards)
+the children of e2 in A are: e1(backwards)

@@ -1,0 +1,12 @@
+# Test graph with islands behavior
+
+# Create a graph
+CreateGraph A
+
+# Add nodes
+AddNode A e1
+AddNode A e2
+
+# Check if it is an island
+ListChildren A e1
+ListChildren A e2
