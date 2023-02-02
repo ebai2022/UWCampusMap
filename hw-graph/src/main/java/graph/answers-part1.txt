@@ -35,6 +35,3 @@ like requiring all the strings passed in to not be null), almost everything is p
 they can cover all the behavior I want to achieve. If I end up adding methods like containsNode or others like
 that, I would use junit to test those to make sure my output is what I want, but for now, all my methods are
 written with specs that are fully testable using script tests.
-
-
-

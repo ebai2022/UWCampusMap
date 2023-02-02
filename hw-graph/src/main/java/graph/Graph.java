@@ -3,15 +3,17 @@ package graph;
 import java.util.*;
 
 /**
- * graph represents a mutable collection of nodes and their respective edges that connect them
+ * Graph represents a mutable collection of nodes and their respective edges that connect them
  */
-public class graph {
+public class Graph {
 
     /**
-     * Constructs a new graph
-     * @spec.effects Constructs a new graph
+     * Constructs a new Graph
+     *
+     * @spec.requires Graph does not already exist
+     * @spec.effects constructs a new graph that is empty (with no nodes and edges)
      */
-    public graph(){
+    public Graph(){
         throw new RuntimeException("constructor is not yet implemented");
     }
 
@@ -26,7 +28,7 @@ public class graph {
      * @spec.effects adds an edge with the label between the parent and the child nodes
      */
     public void addEdge(String parent, String child, String label){
-        throw new RuntimeException("method is not yet implemented");
+        throw new RuntimeException("addEdge is not yet implemented");
     }
 
     /**
@@ -37,25 +39,26 @@ public class graph {
      * @spec.effects adds a node to the graph
      */
     public void addNode(String data){
-        throw new RuntimeException("method is not yet implemented");
+        throw new RuntimeException("addNode is not yet implemented");
     }
 
     /**
-     * Gets the children associated with node "parent"
+     * Gets the children associated with node "parent" in alphabetical order by node name and
+     * secondarily by edge label
      *
      * @param parent the data that represents the parent
      * @return the list of children associated with the parent
      * @spec.requires parent != null, graph contains parent
      */
     public List<String> listChildren(String parent){
-        throw new RuntimeException("method is not yet implemented");
+        throw new RuntimeException("listChildren is not yet implemented");
     }
 
     /**
-     * Gets the nodes contained within the graph
+     * Gets the nodes contained within the graph in alphabetical order by node name
      *
      * @return the list of nodes contained within this graph
      */
-    public List<String> listNodes(){ throw new RuntimeException("method is not yet implemented"); }
+    public List<String> listNodes(){ throw new RuntimeException("listNode is not yet implemented"); }
 
 }
