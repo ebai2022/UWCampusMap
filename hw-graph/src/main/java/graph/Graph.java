@@ -9,9 +9,16 @@ public class Graph {
 
     private Map<String, Map<String, Set<String>>> nodes;
 
-    // Abstraction function: what does each thing represent in graph
+    // Abstraction function: For a graph g, let the "parent" nodes of g be "nodes.keySet()". The "children" nodes of a
+    // "parent" i would be "nodes.get(i).keySet()". The "edge label" j from a child node would be "nodes.get(i).get(j),
+    // where all the edge labels associated with the child node would be "nodes.get(i).values()".
+    //
+    // Representation invariant for every Graph g:
+    // g != null &&
+    // "parent" nodes cannot be null &&
+    // "child" nodes cannot be null &&
+    // "edge labels" cannot be null
 
-    // Representation invariant:
     /**
      * Constructs a new Graph
      *
@@ -30,12 +37,17 @@ public class Graph {
         boolean expensive = true;
 
         if (expensive){
-            //check duplicate nodes
-
-            //check duplicate edges
+            // check no nulls
+            for (String parent : nodes.keySet()){
+                assert(parent != null) : "null parent";
+                for (String child : nodes.get(parent).keySet()){
+                    assert (child != null) : "null child";
+                    for (String edge : nodes.get(parent).get(child)){
+                        assert (edge != null) : "null edge";
+                    }
+                }
+            }
         }
-
-        //check no nulls?
     }
 
     /**
@@ -44,13 +56,19 @@ public class Graph {
      * @param parent the data that identifies the parent
      * @param child the data that identifies the child
      * @param label the data that represents the edge label
-     * @spec.requires parent, child, label != null, graph must contain both the parent and child, and the
-     * label must be unique between the parent and child node in graph
-     * @spec.effects adds an edge with the label between the parent and the child nodes
+     * @spec.requires parent, child, label != null
+     * @spec.effects adds an edge with the label between the parent and the child nodes. If the parent or child does not
+     * exist in the graph, or the label is not unique, nothing is added
      */
     public void addEdge(String parent, String child, String label){
         checkRep();
-        nodes.get(parent).get(child).add(label);
+        //separate checks - first if we have both the parent and child nodes in the keyset, then if we have the child as an actual child of the parent (if so add to list, if not create a new list and add)
+        if (nodes.containsKey(parent) && nodes.containsKey(child)){
+            if (!nodes.get(parent).containsKey(child)){
+                nodes.get(parent).put(child, new HashSet<>());
+            }
+            nodes.get(parent).get(child).add(label);
+        }
         checkRep();
     }
 
@@ -58,31 +76,31 @@ public class Graph {
      * Adds a node to the graph
      *
      * @param data the data that represents the node
-     * @spec.requires data != null, graph does not contain a node with contents entirely equal to data
-     * @spec.effects adds a node to the graph
+     * @spec.requires data != null
+     * @spec.effects adds a node to the graph. If the node is not unique, the node is not added
      */
     public void addNode(String data){
         checkRep();
         //check if data already exists?
-        if (nodes.containsKey(data)){
-            //throw anything?
-        } else{
+        if (!nodes.containsKey(data) && data != null){
             nodes.put(data, new HashMap<>());
         }
     }
 
     /**
-     * Gets the children associated with node "parent"
+     * Gets the children associated with node "parent" and their respective edges
      *
      * @param parent the data that represents the parent
-     * @return the list of children associated with the parent
+     * @return the map of children associated with the parent and their respective edges
      * @spec.requires parent != null, graph contains parent
      */
     public Map<String, Set<String>> listChildren(String parent){
         checkRep();
-        Map<String, Set<String>> children = nodes.get(parent);
-        checkRep();
-        return children;
+        if (!nodes.containsKey(parent)){
+            // throw?
+        }
+        // does this have rep exposure
+        return nodes.get(parent);
     }
 
     /**
@@ -92,6 +110,7 @@ public class Graph {
      */
     public Set<String> listNodes(){
         checkRep();
+        // does this have rep exposure
         return nodes.keySet();
     }
 

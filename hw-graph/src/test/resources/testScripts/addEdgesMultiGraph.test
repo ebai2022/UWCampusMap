@@ -12,6 +12,7 @@ AddNode B e4
 
 # Add edges
 AddEdge A e1 e2 first
+AddEdge B e3 e4 third
 AddEdge B e3 e4 second
 
 # Check the edges

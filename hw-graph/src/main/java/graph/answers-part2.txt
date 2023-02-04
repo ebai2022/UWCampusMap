@@ -46,12 +46,15 @@ have to go through all the lists associated with all the children nodes.
 
 1. Describe any new tests you added and why you added them, or why you feel that your original
 tests alone are sufficient.
-
-
-
+I did not add any new tests but I did change my addEdgesMultiGraph test to include a case where there are multiple edges
+from a parent to a child. This is to test that my graph can store multiple edges from one node to another and also to
+check if my GraphTestDriver can print the output as defined (alphabetical order of nodes and then edges). My original
+tests are sufficient otherwise because they check all the cases that I might run into trouble with
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
-
-
-
+Yes. Instead of requiring the client to give me a parent and child in the graph to add the node, I just tell them that
+if they give me a parent and child that are not in the graph, nothing will happen. This is similar to why I removed the
+spec requirements for the labels or node names passed in to be unique, since I can just tell the client that they can
+still pass them in, just that nothing will happen if they do. This way I'm specifying behavior better and leaving less
+ambiguity in my code.

@@ -12,10 +12,11 @@ added node e4 to B
 
 # Add edges
 added edge first from e1 to e2 in A
+added edge third from e3 to e4 in B
 added edge second from e3 to e4 in B
 
 # Check the edges
 the children of e1 in A are: e2(first)
 the children of e2 in A are:
-the children of e3 in B are: e4(second)
+the children of e3 in B are: e4(second) e4(third)
 the children of e4 in B are:
