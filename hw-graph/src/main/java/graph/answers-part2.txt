@@ -16,16 +16,28 @@ A few examples of possible Graph representations:
 1. In two or three sentences, explain an advantage and a disadvantage of each of the
 representations listed above (for example, in terms of runtime complexity, space
 complexity, or ease of implementation).
-
-
-
+With a collection of nodes and a collection of edges, the main advantage is that it is extremely easy to add both nodes
+and edges, and to check if an edge or node exists (fast runtime). However, the main disadvantage is that removing a node
+would result in a very difficult time removing all the edges, as it would be quite annoying finding all the edges
+related to that node to be able to delete them.
+With an adjacency list, the main advantage is that it is super easy to implement a method for listing the children nodes,
+as we can use the inherent keyset method of a map to get a list of the nodes, while also having easy connection to the
+edges (meaning if we were to delete a node the edges would be gone also). The main problem here is that finding if an
+edge exists would have bad runtime complexity as we would have to check through every single node and then all the edges
+relating to that node.
+With an adjacency matrix, the main advantage is that finding if 2 nodes are connected is extremely efficient runtime-wise
+if we know which node we are looking for, as it would literally be done in one operation. However, the space and time
+complexity here could be really bad if we have a lot of nodes and almost no edges, as a lot of the space would just be
+unnecessary.
 
 2. In two to three sentences, describe the representation you chose and explain why you
 chose it. If you chose to use a different representation than one of the three we described
 above, be sure to list its advantages and disadvantages, too.
-
-
-
+I chose to use an adjacency list because I feel like it is the cleanest and fastest way for me to access both the parent
+node, the child notes, and also the edges. My adjacency list is slightly different though, in that I have nodes connecting
+to nodes which then connect to lists of edges. The main advantage here is that I have extremely easy and fast access
+to the children of a node and all the nodes in the class, but it is difficult identifying if an edge exists since I would
+have to go through all the lists associated with all the children nodes.
 
 ## Part 4
 ###########################################################################

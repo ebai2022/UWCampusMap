@@ -7,6 +7,11 @@ import java.util.*;
  */
 public class Graph {
 
+    private Map<String, Map<String, Set<String>>> nodes;
+
+    // Abstraction function: what does each thing represent in graph
+
+    // Representation invariant:
     /**
      * Constructs a new Graph
      *
@@ -14,7 +19,23 @@ public class Graph {
      * @spec.effects constructs a new graph that is empty (with no nodes and edges)
      */
     public Graph(){
-        throw new RuntimeException("constructor is not yet implemented");
+        nodes = new HashMap<>();
+    }
+
+    /**
+     * Throws an exception if the representation invariant is violated.
+     */
+    private void checkRep() {
+        assert(this != null);
+        boolean expensive = true;
+
+        if (expensive){
+            //check duplicate nodes
+
+            //check duplicate edges
+        }
+
+        //check no nulls?
     }
 
     /**
@@ -28,7 +49,9 @@ public class Graph {
      * @spec.effects adds an edge with the label between the parent and the child nodes
      */
     public void addEdge(String parent, String child, String label){
-        throw new RuntimeException("addEdge is not yet implemented");
+        checkRep();
+        nodes.get(parent).get(child).add(label);
+        checkRep();
     }
 
     /**
@@ -39,26 +62,39 @@ public class Graph {
      * @spec.effects adds a node to the graph
      */
     public void addNode(String data){
-        throw new RuntimeException("addNode is not yet implemented");
+        checkRep();
+        //check if data already exists?
+        if (nodes.containsKey(data)){
+            //throw anything?
+        } else{
+            nodes.put(data, new HashMap<>());
+        }
     }
 
     /**
-     * Gets the children associated with node "parent" in alphabetical order by node name and
-     * secondarily by edge label
+     * Gets the children associated with node "parent"
      *
      * @param parent the data that represents the parent
      * @return the list of children associated with the parent
      * @spec.requires parent != null, graph contains parent
      */
-    public List<String> listChildren(String parent){
-        throw new RuntimeException("listChildren is not yet implemented");
+    public Map<String, Set<String>> listChildren(String parent){
+        checkRep();
+        Map<String, Set<String>> children = nodes.get(parent);
+        checkRep();
+        return children;
     }
 
     /**
-     * Gets the nodes contained within the graph in alphabetical order by node name
+     * Gets the nodes contained within the graph
      *
      * @return the list of nodes contained within this graph
      */
-    public List<String> listNodes(){ throw new RuntimeException("listNode is not yet implemented"); }
+    public Set<String> listNodes(){
+        checkRep();
+        return nodes.keySet();
+    }
+
+    //add a contains node method?
 
 }
