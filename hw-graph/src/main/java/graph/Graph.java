@@ -16,12 +16,13 @@ public class Graph {
     // Representation invariant for every Graph g:
     // g != null &&
     // "parent" nodes cannot be null &&
-    // "child" nodes cannot be null &&
+    // "child" nodes cannot be null, have to also be contained in "parent" nodes, and have to have at least one edge &&
     // "edge labels" cannot be null
 
     /**
      * Constructs a new Graph
      *
+     * @spec.modifies this
      * @spec.requires Graph does not already exist
      * @spec.effects constructs a new graph that is empty (with no nodes and edges)
      */
@@ -47,6 +48,18 @@ public class Graph {
                     }
                 }
             }
+            // check if all children are also a parent node
+            for (String parent : nodes.keySet()){
+                for (String child : nodes.get(parent).keySet()){
+                    assert(nodes.containsKey(child) == true) : "missing parent node";
+                }
+            }
+            // check if all children have at least one edge
+            for (String parent : nodes.keySet()){
+                for (String child : nodes.get(parent).keySet()){
+                    assert(nodes.get(parent).get(child) != null) : "no edges connecting parent and child";
+                }
+            }
         }
     }
 
@@ -56,6 +69,7 @@ public class Graph {
      * @param parent the data that identifies the parent
      * @param child the data that identifies the child
      * @param label the data that represents the edge label
+     * @spec.modifies this
      * @spec.requires parent, child, label != null
      * @spec.effects adds an edge with the label between the parent and the child nodes. If the parent or child does not
      * exist in the graph, or the label is not unique, nothing is added
@@ -76,6 +90,7 @@ public class Graph {
      * Adds a node to the graph
      *
      * @param data the data that represents the node
+     * @spec.modifies this
      * @spec.requires data != null
      * @spec.effects adds a node to the graph. If the node is not unique, the node is not added
      */
