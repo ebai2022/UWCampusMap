@@ -9,6 +9,8 @@ public class Graph {
 
     private Map<String, Map<String, Set<String>>> nodes;
 
+    private final boolean ExpensiveCheck = true;
+
     // Abstraction function: For a graph g, let the "parent" nodes of g be "nodes.keySet()". The "children" nodes of a
     // "parent" i would be "nodes.get(i).keySet()". The "edge label" j from a child node would be "nodes.get(i).get(j),
     // where all the edge labels associated with the child node would be "nodes.get(i).values()".
@@ -22,12 +24,12 @@ public class Graph {
     /**
      * Constructs a new Graph
      *
-     * @spec.modifies this
      * @spec.requires Graph does not already exist
      * @spec.effects constructs a new graph that is empty (with no nodes and edges)
      */
     public Graph(){
         nodes = new HashMap<>();
+        checkRep();
     }
 
     /**
@@ -35,9 +37,8 @@ public class Graph {
      */
     private void checkRep() {
         assert(this != null);
-        boolean expensive = true;
 
-        if (expensive){
+        if (ExpensiveCheck){
             // check no nulls
             for (String parent : nodes.keySet()){
                 assert(parent != null) : "null parent";
@@ -76,7 +77,6 @@ public class Graph {
      */
     public void addEdge(String parent, String child, String label){
         checkRep();
-        //separate checks - first if we have both the parent and child nodes in the keyset, then if we have the child as an actual child of the parent (if so add to list, if not create a new list and add)
         if (nodes.containsKey(parent) && nodes.containsKey(child)){
             if (!nodes.get(parent).containsKey(child)){
                 nodes.get(parent).put(child, new HashSet<>());
@@ -96,7 +96,6 @@ public class Graph {
      */
     public void addNode(String data){
         checkRep();
-        //check if data already exists?
         if (!nodes.containsKey(data) && data != null){
             nodes.put(data, new HashMap<>());
         }
