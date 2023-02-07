@@ -3,7 +3,7 @@ package graph;
 import java.util.*;
 
 /**
- * Graph represents a mutable collection of nodes and their respective edges that connect them
+ * Graph represents a mutable collection of nodes and the respective edges that connect nodes
  */
 public class Graph {
 
@@ -17,14 +17,13 @@ public class Graph {
     //
     // Representation invariant for every Graph g:
     // g != null &&
-    // "parent" nodes cannot be null &&
+    // "parent" nodes cannot be null and are unique &&
     // "child" nodes cannot be null, have to also be contained in "parent" nodes, and have to have at least one edge &&
     // "edge labels" cannot be null
 
     /**
      * Constructs a new Graph
      *
-     * @spec.requires Graph does not already exist
      * @spec.effects constructs a new graph that is empty (with no nodes and edges)
      */
     public Graph(){
@@ -37,7 +36,7 @@ public class Graph {
      */
     private void checkRep() {
         assert(this != null);
-
+        // hashmap means that all keys are automatically unique, so we cannot have duplicate nodes
         if (ExpensiveCheck){
             // check no nulls
             for (String parent : nodes.keySet()){
@@ -102,7 +101,7 @@ public class Graph {
     }
 
     /**
-     * Gets the children associated with node "parent" and their respective edges
+     * Gets the children associated with node "parent" and the edges that connect each child to its parent
      *
      * @param parent the data that represents the parent
      * @return the map of children associated with the parent and their respective edges
@@ -124,10 +123,7 @@ public class Graph {
      */
     public Set<String> listNodes(){
         checkRep();
-        // does this have rep exposure
         return nodes.keySet();
     }
-
     //add a contains node method?
-
 }
