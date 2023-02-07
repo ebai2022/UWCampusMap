@@ -98,6 +98,7 @@ public class Graph {
         if (!nodes.containsKey(data) && data != null){
             nodes.put(data, new HashMap<>());
         }
+        checkRep();
     }
 
     /**
@@ -112,8 +113,9 @@ public class Graph {
         if (!nodes.containsKey(parent)){
             // throw?
         }
-        // does this have rep exposure
-        return nodes.get(parent);
+        Map<String, Set<String>> children = new HashMap<>(nodes.get(parent));
+        checkRep();
+        return children;
     }
 
     /**
@@ -121,9 +123,11 @@ public class Graph {
      *
      * @return the list of nodes contained within this graph
      */
-    public Set<String> listNodes(){
+    public List<String> listNodes(){
         checkRep();
-        return nodes.keySet();
+        List<String> allNodes = new ArrayList<>(nodes.keySet());
+        checkRep();
+        return allNodes;
     }
     //add a contains node method?
 }
