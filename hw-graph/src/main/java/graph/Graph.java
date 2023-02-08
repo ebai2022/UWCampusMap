@@ -9,7 +9,7 @@ public class Graph {
 
     private Map<String, Map<String, Set<String>>> nodes;
 
-    private final boolean ExpensiveCheck = true;
+    private final boolean ExpensiveCheck = false;
 
     // Abstraction function: For a graph g, let the "parent" nodes of g be "nodes.keySet()". The "children" nodes of a
     // "parent" i would be "nodes.get(i).keySet()". The "edge label" j from a child node would be "nodes.get(i).get(j),
@@ -110,9 +110,9 @@ public class Graph {
      */
     public Map<String, Set<String>> listChildren(String parent){
         checkRep();
-        if (!nodes.containsKey(parent)){
+        //if (!nodes.containsKey(parent)){
             // throw?
-        }
+        //}
         Map<String, Set<String>> children = new HashMap<>(nodes.get(parent));
         checkRep();
         return children;
