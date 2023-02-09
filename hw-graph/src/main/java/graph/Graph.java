@@ -95,7 +95,7 @@ public class Graph {
      */
     public void addNode(String data){
         checkRep();
-        if (!nodes.containsKey(data) && data != null){
+        if (!nodes.containsKey(data)){
             nodes.put(data, new HashMap<>());
         }
         checkRep();
