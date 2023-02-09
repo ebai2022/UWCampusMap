@@ -172,7 +172,10 @@ public class GraphTestDriver {
         // TODO Insert your code here.
         Graph g = graphs.get(graphName);
         output.print(graphName + " contains:");
-        for (String s : g.listNodes()){
+        List<String> nodes = new ArrayList<>(g.listNodes());
+        //alphabetize
+        Collections.sort(nodes);
+        for (String s : nodes){
             output.print(" " + s);
         }
         output.println();
@@ -192,18 +195,12 @@ public class GraphTestDriver {
         // TODO Insert your code here.
         Graph g = graphs.get(graphName);
         output.print("the children of " + parentName + " in " + graphName + " are:");
-        // to get into alphabetical
-        List<String> sorted = new ArrayList<>();
-        for (String node : g.listChildren(parentName).keySet()){
-            sorted.add(node);
-        }
-        Collections.sort(sorted);
-        for (String child : sorted){
-            // to get into alphabetical
-            List<String> sortEdges = new ArrayList<>();
-            for (String node : g.listChildren(parentName).get(child)){
-                sortEdges.add(node);
-            }
+        List<String> sortedChildren = new ArrayList<>(g.listChildren(parentName).keySet());
+        //alphabetize
+        Collections.sort(sortedChildren);
+        for (String child : sortedChildren){
+            List<String> sortEdges = new ArrayList<>(g.listChildren(parentName).get(child));
+            //alphabetize
             Collections.sort(sortEdges);
             for (String edge : sortEdges){
                 output.print(" " + child);
