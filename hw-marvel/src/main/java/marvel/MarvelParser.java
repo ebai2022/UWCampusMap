@@ -14,6 +14,7 @@ package marvel;
 import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Parser utility to load the Marvel Comics dataset.
@@ -28,12 +29,22 @@ public class MarvelParser {
      * @spec.requires filename is a valid file in the resources/data folder.
      */
     // TODO: Replace 'void' with the type you want the parser to produce
-    public static void parseData(String filename) {
+    public static Map<String, Set<String>> parseData(String filename) {
         List<String> lines = readLines(filename);
 
         // TODO: Complete this method. You'll need to:
         //  - Split each line into its individual parts
         //  - Collect the data into some convenient data structure(s) to return to the graph building code
+        // idea - use edges as keys instead of nodes?
+        Map<String, Set<String>> nodesAndLabels = new HashMap<>();
+        for (String line : lines){
+            String[] parts = line.split(",");
+            if (!nodesAndLabels.containsKey(parts[0])){
+                nodesAndLabels.put(line, new HashSet<>());
+            }
+            nodesAndLabels.get(line).add(parts[1]);
+        }
+        return nodesAndLabels;
     }
 
     /**
