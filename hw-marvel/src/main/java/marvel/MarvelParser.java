@@ -35,14 +35,13 @@ public class MarvelParser {
         // TODO: Complete this method. You'll need to:
         //  - Split each line into its individual parts
         //  - Collect the data into some convenient data structure(s) to return to the graph building code
-        // idea - use edges as keys instead of nodes?
         Map<String, Set<String>> nodesAndLabels = new HashMap<>();
         for (String line : lines){
             String[] parts = line.split(",");
-            if (!nodesAndLabels.containsKey(parts[0])){
-                nodesAndLabels.put(line, new HashSet<>());
+            if (!nodesAndLabels.containsKey(parts[1])){
+                nodesAndLabels.put(parts[1], new HashSet<>());
             }
-            nodesAndLabels.get(line).add(parts[1]);
+            nodesAndLabels.get(parts[1]).add(parts[0]);
         }
         return nodesAndLabels;
     }

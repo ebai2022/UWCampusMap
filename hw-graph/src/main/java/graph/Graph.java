@@ -80,6 +80,7 @@ public class Graph {
             if (!nodes.get(parent).containsKey(child)){
                 nodes.get(parent).put(child, new HashSet<>());
             }
+            // no need to check duplicate labels because sets don't allow duplicates
             nodes.get(parent).get(child).add(label);
         }
         checkRep();
@@ -129,5 +130,14 @@ public class Graph {
         checkRep();
         return allNodes;
     }
-    //add a contains node method?
+
+    /**
+     * Checks if a node is in the graph
+     *
+     * @param node the data that represents the node
+     * @return true if the node is contained in this, false otherwise
+     */
+    public boolean containsNode(String node){
+        return nodes.containsKey(node);
+    }
 }
