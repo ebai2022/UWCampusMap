@@ -37,6 +37,7 @@ public class Graph {
     private void checkRep() {
         assert(this != null);
         // hashmap means that all keys are automatically unique, so we cannot have duplicate nodes
+        // set means that all edges are automatically unique, so we cannot have duplicate edges from node A to node B
         if (ExpensiveCheck){
             // check no nulls
             for (String parent : nodes.keySet()){
@@ -111,9 +112,6 @@ public class Graph {
      */
     public Map<String, Set<String>> listChildren(String parent){
         checkRep();
-        //if (!nodes.containsKey(parent)){
-            // throw?
-        //}
         Map<String, Set<String>> children = new HashMap<>(nodes.get(parent));
         checkRep();
         return children;
