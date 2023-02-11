@@ -63,6 +63,7 @@ public class MarvelTestDriver {
     private void executeCommand(String command, List<String> arguments) {
         try {
             switch(command) {
+                // won't have this (possibly), use load graph
                 case "CreateGraph":
                     createGraph(arguments);
                     break;
@@ -195,6 +196,13 @@ public class MarvelTestDriver {
         output.println();
     }
 
+    private void loadGraph(String graphName, String fileName){
+
+    }
+
+    private void findPath(String graphName, String nodeA, String nodeB){
+
+    }
     /**
      * This exception results when the input file cannot be parsed properly
      **/
