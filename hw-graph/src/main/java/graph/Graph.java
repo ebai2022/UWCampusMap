@@ -136,6 +136,7 @@ public class Graph {
      * @return true if the node is contained in this, false otherwise
      */
     public boolean containsNode(String node){
+        checkRep();
         return nodes.containsKey(node);
     }
 }

@@ -12,6 +12,7 @@
 package marvel.scriptTestRunner;
 
 import graph.Graph;
+import marvel.MarvelPaths;
 
 import java.io.*;
 import java.util.*;
@@ -22,10 +23,18 @@ import java.util.*;
  */
 public class MarvelTestDriver {
 
+    /**
+     * String -> Graph: maps the names of graphs to the actual graph
+     **/
     private final Map<String, Graph> graphs = new HashMap<String, Graph>();
     private final PrintWriter output;
     private final BufferedReader input;
     // Leave this constructor public
+    /**
+     * @spec.requires r != null && w != null
+     * @spec.effects Creates a new GraphTestDriver which reads command from
+     * {@code r} and writes results to {@code w}
+     **/
     public MarvelTestDriver(Reader r, Writer w) {
         // TODO: Implement this, reading commands from `r` and writing output to `w`.
         // See GraphTestDriver as an example.
@@ -34,6 +43,10 @@ public class MarvelTestDriver {
     }
 
     // Leave this method public
+    /**
+     * @throws IOException if the input or output sources encounter an IOException
+     * @spec.effects Executes the commands read from the input and writes results to the output
+     **/
     public void runTests() throws IOException{
         // TODO: Implement this.
         String inputLine;
@@ -63,9 +76,11 @@ public class MarvelTestDriver {
     private void executeCommand(String command, List<String> arguments) {
         try {
             switch(command) {
-                // won't have this (possibly), use load graph
                 case "CreateGraph":
                     createGraph(arguments);
+                    break;
+                case "LoadGraph":
+                    loadGraph(arguments);
                     break;
                 case "AddNode":
                     addNode(arguments);
@@ -79,6 +94,8 @@ public class MarvelTestDriver {
                 case "ListChildren":
                     listChildren(arguments);
                     break;
+                case "FindPath":
+                    findPath(arguments);
                 default:
                     output.println("Unrecognized command: " + command);
                     break;
@@ -139,7 +156,6 @@ public class MarvelTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        // TODO Insert your code here.
         Graph g = graphs.get(graphName);
         g.addEdge(parentName, childName, edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " + childName + " in " + graphName);
@@ -155,7 +171,6 @@ public class MarvelTestDriver {
     }
 
     private void listNodes(String graphName) {
-        // TODO Insert your code here.
         Graph g = graphs.get(graphName);
         output.print(graphName + " contains:");
         List<String> nodes = new ArrayList<>(g.listNodes());
@@ -178,7 +193,6 @@ public class MarvelTestDriver {
     }
 
     private void listChildren(String graphName, String parentName) {
-        // TODO Insert your code here.
         Graph g = graphs.get(graphName);
         output.print("the children of " + parentName + " in " + graphName + " are:");
         List<String> sortedChildren = new ArrayList<>(g.listChildren(parentName).keySet());
@@ -196,12 +210,43 @@ public class MarvelTestDriver {
         output.println();
     }
 
-    private void loadGraph(String graphName, String fileName){
+    private void loadGraph(List<String> arguments) {
+        if(arguments.size() != 2) {
+            throw new CommandException("Bad arguments to loadGraph: " + arguments);
+        }
 
+        String graphName = arguments.get(0);
+        String fileName = arguments.get(1);
+        loadGraph(graphName, fileName);
     }
 
-    private void findPath(String graphName, String nodeA, String nodeB){
+    private void loadGraph(String graphName, String fileName){
+        graphs.put(graphName, MarvelPaths.buildGraph(fileName));
+        output.println("loaded graph " + graphName);
+    }
 
+    private void findPath(List<String> arguments){
+        if(arguments.size() != 3){
+            throw new CommandException("Bad arguments to FindPath: " + arguments);
+        }
+
+        String graphName = arguments.get(0);
+        String nodeA = arguments.get(1);
+        String nodeB = arguments.get(2);
+        findPath(graphName, nodeA, nodeB);
+    }
+    private void findPath(String graphName, String nodeA, String nodeB){
+        Graph g = graphs.get(graphName);
+        output.println("path from " + nodeA + " to " + nodeB);
+        List<String> path = MarvelPaths.findPath(g, nodeA, nodeB);
+        if (path == null){
+            output.println("no path found");
+        } else{
+            output.println(nodeA + " to " + path.get(0) + " via " + path.get(1));
+            for (int i = 2; i < path.size(); i+=2){
+                output.println(path.get(i-2) + " to " + path.get(i) + " via " + path.get(i+1));
+            }
+        }
     }
     /**
      * This exception results when the input file cannot be parsed properly

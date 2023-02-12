@@ -14,7 +14,7 @@ public class MarvelPaths {
     }
 
     // do i need to document methods w/ java doc (yes)
-    // what does my test driver need/not need (use method pairs, need those 2
+    // what does my test driver need/not need (use method pairs, need those 2)
     // methods, probably don't need creategraph, put stuff into execute command)
     // am i doing bfs correctly (apparently yes)
     // how do i test my program in general (script test drivers)
@@ -22,20 +22,19 @@ public class MarvelPaths {
     /**
      * Builds a graph from a given file name
      *
-     * @param fileName
-     * @return
+     * @param fileName the file with data used to build the graph
+     * @return a graph that is built from the given file
      */
-    public Graph buildGraph(String fileName){
+    public static Graph buildGraph(String fileName){
         Graph g = new Graph();
         Map<String, Set<String>> nodesAndLabels = MarvelParser.parseData(fileName);
         for (String label : nodesAndLabels.keySet()){
             List<String> children = new ArrayList<>(nodesAndLabels.get(label));
-            String parent = children.get(0);
-            g.addNode(parent);
             for (int i = 0; i < children.size(); i++){
-                parent = children.get(i);
+                String parent = children.get(i);
+                g.addNode(parent);
                 for (int j = i+1; j < children.size(); j++){
-                    String child = children.get(i);
+                    String child = children.get(j);
                     if (i == 0){
                         g.addNode(child);
                     }
@@ -50,36 +49,41 @@ public class MarvelPaths {
     /**
      * Finds the shortest path from a node to another node in the given graph
      *
-     * @param g
-     * @param char1
-     * @param char2
-     * @return blah blah, null if there is no path from char1 to char2
+     * @param g the graph to use to find the shortest path from char1 to char2
+     * @param char1 the node to start on
+     * @param char2 the character to end on
+     *              should I throw an exception if g/char1/char2 are null?
+     * @return a list of strings corresponding to the shortest path from char1 to char2. returns
+     * null if there is no path from char1 to char2, or if char1 or char2 do not exist in the graph
      */
-    public List<String> bfsAlg(Graph g, String char1, String char2){
-        List<String> shortest = new ArrayList<>();
+    public static List<String> findPath(Graph g, String char1, String char2){
+        if (!g.containsNode(char1) || !g.containsNode(char2)){
+            return null;
+        }
         Queue<String> visitNodes = new LinkedList<>();
-        Map<String, List<String>> paths = new HashMap<>();
+        Map<String, String> paths = new HashMap<>();
         visitNodes.add(char1);
-        paths.put(char1, new ArrayList<>());
+        paths.put(char1, null);
         while (!visitNodes.isEmpty()) {
             String node = visitNodes.remove();
             if (node.equals(char2)){
-                return paths.get(node);
+                List<String> path = new ArrayList<>();
+                while (paths.get(node) != null){
+                    List<String> edges = new ArrayList<>(g.listChildren(paths.get(node)).get(node));
+                    Collections.sort(edges);
+                    path.add(0, node);
+                    path.add(0, edges.get(0));
+                    node = paths.get(node);
+                }
+                path.add(0, node);
+                return path;
             }
-            // use treemap? treeset? to avoid collections.sort or even the extra loop
-            List<String> sortChildren = new ArrayList<>(g.listChildren(char1).keySet());
+            List<String> sortChildren = new ArrayList<>(g.listChildren(node).keySet());
             Collections.sort(sortChildren);
             for (String child : sortChildren){
-                List<String> sortEdges = new ArrayList<>(g.listChildren(node).get(child));
-                Collections.sort(sortEdges);
-                for (String edge : sortEdges){
-                    if (!paths.get(node).contains(edge)){
-                        List<String> p = paths.get(node);
-                        List<String> pPrime = new ArrayList<>(p);
-                        pPrime.add(edge);
-                        paths.put(child, pPrime);
-                        visitNodes.add(child);
-                    }
+                if (!paths.containsKey(child)){
+                    paths.put(child, node);
+                    visitNodes.add(child);
                 }
             }
         }

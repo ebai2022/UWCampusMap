@@ -2,6 +2,7 @@ package graph.junitTests;
 
 import graph.Graph;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
 public final class GraphTest {
@@ -14,6 +15,7 @@ public final class GraphTest {
     // testing whether the containsNode method works
 
     // checks that nodes that are not in the graph return false for contains node
+    @Test
     public void testNoNode(){
         notInGraph.addNode("Bob");
         assertFalse(notInGraph.containsNode("Bobby"));
@@ -21,6 +23,7 @@ public final class GraphTest {
     }
 
     // checks that nodes that are in the graph return true for contains node
+    @Test
     public void testExistingNode(){
         inGraph.addNode("Kevin");
         inGraph.addNode("Sophia");
