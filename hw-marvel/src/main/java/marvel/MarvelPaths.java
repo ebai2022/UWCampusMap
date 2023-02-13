@@ -2,6 +2,7 @@ package marvel;
 
 import graph.Graph;
 import java.util.*;
+import java.util.Scanner;
 
 /**
  * MarvelPaths represents the main window for building a graph and finding the shortest path between
@@ -14,8 +15,32 @@ public class MarvelPaths {
      *
      * @param args do i even need this
      */
-    public static void Main(String[] args) {
-
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("hola! I'm google maps 2nd cousin, bozofinder");
+        System.out.println("Please enter a full csv file name and two character names all separated by spaces to " +
+                "find the shortest distance from the first character to the second, or use 'quit' to stop");
+        String s = input.nextLine();
+        while (!s.equals("quit")){
+            String[] arg = s.split(" ");
+            if (arg.length != 3){
+                System.out.println("bad input reeeee");
+            } else {
+                Graph g = buildGraph(arg[0]);
+                List<String> shortest = findPath(g, arg[1], arg[2]);
+                if (shortest == null){
+                    System.out.println("no path found!");
+                } else{
+                    System.out.println("The shortest path from " + arg[1] + " to " + arg[2] + " is: ");
+                    System.out.println(shortest);
+                }
+            }
+            System.out.println();
+            System.out.println("Please enter a full csv file name and two character names all separated by spaces to " +
+                    "find the shortest distance from the first character to the second, or use 'quit' to stop");
+            s = input.nextLine();
+        }
+        System.out.println("baibai");
     }
 
     // questions:
