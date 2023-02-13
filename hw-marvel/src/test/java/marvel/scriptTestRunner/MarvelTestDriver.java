@@ -97,7 +97,7 @@ public class MarvelTestDriver {
                 case "FindPath":
                     findPath(arguments);
                 default:
-                    output.println("Unrecognized command: " + command);
+                    //output.println("Unrecognized command: " + command);
                     break;
             }
         } catch(Exception e) {
@@ -237,14 +237,23 @@ public class MarvelTestDriver {
     }
     private void findPath(String graphName, String nodeA, String nodeB){
         Graph g = graphs.get(graphName);
-        output.println("path from " + nodeA + " to " + nodeB);
         List<String> path = MarvelPaths.findPath(g, nodeA, nodeB);
-        if (path == null){
-            output.println("no path found");
-        } else{
-            output.println(nodeA + " to " + path.get(0) + " via " + path.get(1));
-            for (int i = 2; i < path.size(); i+=2){
-                output.println(path.get(i-2) + " to " + path.get(i) + " via " + path.get(i+1));
+        if (!g.containsNode(nodeA) && !g.containsNode(nodeB)){
+            output.println("unknown: " + nodeA);
+            output.println("unknown: " + nodeB);
+        } else if (!g.containsNode(nodeA)) {
+            output.println("unknown: " + nodeA);
+        } else if (!g.containsNode(nodeB)){
+            output.println("unknown: " + nodeB);
+        }
+        else {
+            output.println("path from " + nodeA + " to " + nodeB + ":");
+            if (path == null){
+                output.println("no path found");
+            } else{
+                for (int i = 0; i < path.size()-1; i += 2) {
+                    output.println(path.get(i) + " to " + path.get(i+2) + " via " + path.get(i + 1));
+                }
             }
         }
     }

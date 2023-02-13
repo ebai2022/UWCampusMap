@@ -26,6 +26,7 @@ public class MarvelParser {
      * name and a comic book the character appeared in, separated by a comma character
      *
      * @param filename The file that will be read.
+     * @return a collection of comic books relating to all the characters in that comic book
      * @spec.requires filename is a valid file in the resources/data folder.
      */
     // TODO: Replace 'void' with the type you want the parser to produce
