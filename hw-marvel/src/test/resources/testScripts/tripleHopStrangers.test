@@ -1,0 +1,9 @@
+# Testing different hops to get from different nodes to each other
+
+LoadGraph g strangers.csv
+
+# 3 hops
+FindPath g Ethan Yufei
+
+# 1 hop
+FindPath g Ethan Elaine

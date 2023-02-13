@@ -1,0 +1,9 @@
+# Testing a node that does not share any edges with the other nodes
+
+loaded graph g
+
+path from Fake to Andrew:
+no path found
+
+path from Ethan to Fake:
+no path found

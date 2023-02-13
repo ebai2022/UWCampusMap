@@ -1,0 +1,7 @@
+# Testing a node that does not share any edges with the other nodes
+
+LoadGraph g strangers.csv
+
+FindPath g Fake Andrew
+
+FindPath g Ethan Fake

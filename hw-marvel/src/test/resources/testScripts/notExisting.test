@@ -1,0 +1,12 @@
+# Testing a node that does not exist in the graph
+
+LoadGraph g strangers.csv
+
+# char1 doesn't exist
+FindPath g Imposter Fake
+
+# char2 doesn't exist
+FindPath g Ethan Edward
+
+# both chars don't exist
+FindPath g Edward Ralen

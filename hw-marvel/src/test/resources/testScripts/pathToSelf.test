@@ -1,0 +1,7 @@
+# Testing the finding path to the same node
+
+LoadGraph g strangers.csv
+
+FindPath g Andrew Andrew
+
+FindPath g Ethan Ethan

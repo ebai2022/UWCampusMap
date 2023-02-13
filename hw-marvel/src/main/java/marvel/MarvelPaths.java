@@ -4,13 +4,13 @@ import graph.Graph;
 import java.util.*;
 
 /**
- * MarvelPaths represents
- * NOT AN ADT
+ * MarvelPaths represents the main window for building a graph and finding the shortest path between
+ * characters. It contains the main() function that starts the marvel program
  */
 public class MarvelPaths {
 
     /**
-     * insert comment here
+     * insert comment here??
      *
      * @param args do i even need this
      */
@@ -18,6 +18,9 @@ public class MarvelPaths {
 
     }
 
+    // questions:
+    // What do I write for the main method & how to parse? e.g. how to take from system.in
+    // answered:
     // do i need to document methods w/ java doc (yes)
     // what does my test driver need/not need (use method pairs, need those 2)
     // methods, probably don't need creategraph, put stuff into execute command)
@@ -28,6 +31,7 @@ public class MarvelPaths {
      * Builds a graph from a given file name
      *
      * @param fileName the file with data used to build the graph
+     * @spec.requires filename is a valid file in the resources/data folder.
      * @return a graph that is built from the given file
      */
     public static Graph buildGraph(String fileName){
@@ -57,7 +61,7 @@ public class MarvelPaths {
      * @param g the graph to use to find the shortest path from char1 to char2
      * @param char1 the node to start on
      * @param char2 the character to end on
-     *              should I throw an exception if g/char1/char2 are null?
+     * @spec.requires the given graph g is not null
      * @return a list of strings corresponding to the shortest path from char1 to char2. returns
      * null if there is no path from char1 to char2, or if char1 or char2 do not exist in the graph
      */
@@ -72,26 +76,34 @@ public class MarvelPaths {
         while (!visitNodes.isEmpty()) {
             String node = visitNodes.remove();
             if (node.equals(char2)){
-                List<String> path = new ArrayList<>();
-                while (paths.get(node) != null){
-                    List<String> edges = new ArrayList<>(g.listChildren(paths.get(node)).get(node));
-                    Collections.sort(edges);
-                    path.add(0, node);
-                    path.add(0, edges.get(0));
-                    node = paths.get(node);
-                }
-                path.add(0, node);
-                return path;
+                return compileEdgesAndNodes(g, paths, node);
             }
-            List<String> sortChildren = new ArrayList<>(g.listChildren(node).keySet());
-            Collections.sort(sortChildren);
-            for (String child : sortChildren){
-                if (!paths.containsKey(child)){
-                    paths.put(child, node);
-                    visitNodes.add(child);
-                }
-            }
+            addSortedNodes(g, node, paths, visitNodes);
         }
         return null;
+    }
+
+    private static void addSortedNodes(Graph g, String node, Map<String, String> paths, Queue<String> visitNodes){
+        List<String> sortChildren = new ArrayList<>(g.listChildren(node).keySet());
+        Collections.sort(sortChildren);
+        for (String child : sortChildren){
+            if (!paths.containsKey(child)){
+                paths.put(child, node);
+                visitNodes.add(child);
+            }
+        }
+    }
+
+    private static List<String> compileEdgesAndNodes(Graph g, Map<String, String> paths, String node){
+        List<String> path = new ArrayList<>();
+        while (paths.get(node) != null){
+            List<String> edges = new ArrayList<>(g.listChildren(paths.get(node)).get(node));
+            Collections.sort(edges);
+            path.add(0, node);
+            path.add(0, edges.get(0));
+            node = paths.get(node);
+        }
+        path.add(0, node);
+        return path;
     }
 }

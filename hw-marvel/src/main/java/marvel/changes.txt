@@ -1,5 +1,6 @@
 Briefly list any changes you made to your graph class during hw-marvel,
 and why you made those changes.
 
-I added a containsNode method so that I can check whether or not a
-node is in the graph
+I added a containsNode method so that I can check whether or not a node is in the graph. I feel like
+this will be something I need in the future so I went ahead and implemented it and created tests for
+it (also makes it better for me to test the original graph using junit).

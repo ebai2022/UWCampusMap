@@ -1,0 +1,7 @@
+# Testing the finding path to the same node
+
+loaded graph g
+
+path from Andrew to Andrew:
+
+path from Ethan to Ethan:

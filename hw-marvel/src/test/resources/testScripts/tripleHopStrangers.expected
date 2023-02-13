@@ -1,0 +1,13 @@
+# Testing different hops to get from different nodes to each other
+
+loaded graph g
+
+# 3 hops
+path from Ethan to Yufei:
+Ethan to Elaine via CSE190B
+Elaine to Andrew via MoveIn
+Andrew to Yufei via CartPushing
+
+# 1 hop
+path from Ethan to Elaine:
+Ethan to Elaine via CSE190B

@@ -1,0 +1,13 @@
+# Testing a node that does not exist in the graph
+
+loaded graph g
+
+# char1 doesn't exist
+unknown: Imposter
+
+# char2 doesn't exist
+unknown: Edward
+
+# both chars don't exist
+unknown: Edward
+unknown: Ralen
