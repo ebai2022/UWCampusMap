@@ -1,0 +1,5 @@
+# Testing a long path in the full marvel data set
+
+LoadGraph g marvel.csv
+
+FindPath g SACRIFICER SUMMER-KLEIN
