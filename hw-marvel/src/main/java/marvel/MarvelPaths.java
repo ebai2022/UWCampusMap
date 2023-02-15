@@ -73,11 +73,14 @@ public class MarvelPaths {
             for (int i = 0; i < children.size(); i++){
                 String parent = children.get(i);
                 g.addNode(parent);
+                //starting from i+1 to make sure we don't connect a character to themselves
                 for (int j = i+1; j < children.size(); j++){
                     String child = children.get(j);
+                    //making sure we only add the children in each book on the first rotation to not have duplicate operations
                     if (i == 0){
                         g.addNode(child);
                     }
+                    //adding edges both ways
                     g.addEdge(parent, child, label);
                     g.addEdge(child, parent, label);
                 }
@@ -92,7 +95,7 @@ public class MarvelPaths {
      * @param g the graph to use to find the shortest path from char1 to char2
      * @param char1 the node to start on
      * @param char2 the character to end on
-     * @spec.requires the given graph g is not null
+     * @spec.requires the given graph is not null
      * @return a list of strings corresponding to the shortest path from char1 to char2 in the
      * form of nodeA, edge, nodeB... where edge connects from nodeA to node B. Returns null if
      * there is no path from char1 to char2, or if char1 or char2 do not exist in the graph
@@ -101,29 +104,31 @@ public class MarvelPaths {
         if (!g.containsNode(char1) || !g.containsNode(char2)){
             return null;
         }
-        Queue<String> visitNodes = new LinkedList<>();
+        Queue<String> visitedNodes = new LinkedList<>();
         Map<String, String> paths = new HashMap<>();
-        visitNodes.add(char1);
+        visitedNodes.add(char1);
         paths.put(char1, null);
-        while (!visitNodes.isEmpty()) {
-            String node = visitNodes.remove();
+        while (!visitedNodes.isEmpty()) {
+            String node = visitedNodes.remove();
             if (node.equals(char2)){
                 return compileEdgesAndNodes(g, paths, node);
             }
-            addSortedNodes(g, node, paths, visitNodes);
+            addSortedNodes(g, node, paths, visitedNodes);
         }
         return null;
     }
 
     // used to add nodes to the queue that need to be visited
     // used to add already visited nodes with the node visited as the key and the node it came from as the value
-    private static void addSortedNodes(Graph g, String node, Map<String, String> paths, Queue<String> visitNodes){
+    private static void addSortedNodes(Graph g, String node, Map<String, String> paths, Queue<String> visitedNodes){
         List<String> sortChildren = new ArrayList<>(g.listChildren(node).keySet());
+        //sorting for the lexicographically least path
         Collections.sort(sortChildren);
         for (String child : sortChildren){
+            //checking if we have visited the node
             if (!paths.containsKey(child)){
                 paths.put(child, node);
-                visitNodes.add(child);
+                visitedNodes.add(child);
             }
         }
     }
@@ -133,7 +138,9 @@ public class MarvelPaths {
         List<String> path = new ArrayList<>();
         while (paths.get(node) != null){
             List<String> edges = new ArrayList<>(g.listChildren(paths.get(node)).get(node));
+            //sorting for the lexicographically least path
             Collections.sort(edges);
+            //adding to the start to get the right order from start node ----> end node
             path.add(0, node);
             path.add(0, edges.get(0));
             node = paths.get(node);

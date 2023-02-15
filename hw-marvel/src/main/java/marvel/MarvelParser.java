@@ -36,6 +36,7 @@ public class MarvelParser {
         // TODO: Complete this method. You'll need to:
         //  - Split each line into its individual parts
         //  - Collect the data into some convenient data structure(s) to return to the graph building code
+        // using comic books as my keys and having all the characters in that book as the value set
         Map<String, Set<String>> nodesAndLabels = new HashMap<>();
         for (String line : lines){
             String[] parts = line.split(",");

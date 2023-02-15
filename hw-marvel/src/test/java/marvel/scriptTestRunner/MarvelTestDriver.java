@@ -251,6 +251,8 @@ public class MarvelTestDriver {
             if (path == null){
                 output.println("no path found");
             } else{
+                //size-1 handles the self node (asking for nodeA to nodeA) while also handling all other cases
+                //strategy is that size will always go 1-3-5...etc. so we can deal with them all with i+=2 and i<size-1
                 for (int i = 0; i < path.size()-1; i += 2) {
                     output.println(path.get(i) + " to " + path.get(i+2) + " via " + path.get(i + 1));
                 }
