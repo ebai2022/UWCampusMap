@@ -27,7 +27,7 @@ public class MarvelPaths {
                 System.out.println("bad input! make sure your input looks like: file.csv name1 name2");
             } else {
                 try{
-                    Graph g = buildGraph(arg[0]);
+                    Graph<String, String> g = buildGraph(arg[0]);
                     if (!g.containsNode(arg[1]) && !g.containsNode(arg[2])){
                         System.out.println("Graph does not contain " + arg[1]);
                         System.out.println("Graph does not contain " + arg[2]);
@@ -65,8 +65,8 @@ public class MarvelPaths {
      * @spec.requires filename is a valid file in the resources/data folder.
      * @return a graph that is built from the given file
      */
-    public static Graph buildGraph(String fileName){
-        Graph g = new Graph();
+    public static Graph<String, String> buildGraph(String fileName){
+        Graph<String, String> g = new Graph<>();
         Map<String, Set<String>> nodesAndLabels = MarvelParser.parseData(fileName);
         for (String label : nodesAndLabels.keySet()){
             List<String> children = new ArrayList<>(nodesAndLabels.get(label));
@@ -100,7 +100,7 @@ public class MarvelPaths {
      * form of nodeA, edge, nodeB... where edge connects from nodeA to node B. Returns null if
      * there is no path from char1 to char2, or if char1 or char2 do not exist in the graph
      */
-    public static List<String> findPath(Graph g, String char1, String char2){
+    public static List<String> findPath(Graph<String, String> g, String char1, String char2){
         if (!g.containsNode(char1) || !g.containsNode(char2)){
             return null;
         }
@@ -120,7 +120,7 @@ public class MarvelPaths {
 
     // used to add nodes to the queue that need to be visited
     // used to add already visited nodes with the node visited as the key and the node it came from as the value
-    private static void addSortedNodes(Graph g, String node, Map<String, String> paths, Queue<String> visitedNodes){
+    private static void addSortedNodes(Graph<String, String> g, String node, Map<String, String> paths, Queue<String> visitedNodes){
         List<String> sortChildren = new ArrayList<>(g.listChildren(node).keySet());
         //sorting for the lexicographically least path
         Collections.sort(sortChildren);
@@ -134,7 +134,7 @@ public class MarvelPaths {
     }
 
     // used to find all the edges connecting the nodes and put them in a list in the form of node edge node etc.
-    private static List<String> compileEdgesAndNodes(Graph g, Map<String, String> paths, String node){
+    private static List<String> compileEdgesAndNodes(Graph<String, String> g, Map<String, String> paths, String node){
         List<String> path = new ArrayList<>();
         while (paths.get(node) != null){
             List<String> edges = new ArrayList<>(g.listChildren(paths.get(node)).get(node));

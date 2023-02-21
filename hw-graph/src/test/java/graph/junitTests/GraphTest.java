@@ -7,8 +7,8 @@ import org.junit.rules.Timeout;
 import static org.junit.Assert.*;
 public final class GraphTest {
 
-    private Graph notInGraph = new Graph();
-    private Graph inGraph = new Graph();
+    private Graph<String, String> notInGraph = new Graph<>();
+    private Graph<String, String> inGraph = new Graph<>();
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 

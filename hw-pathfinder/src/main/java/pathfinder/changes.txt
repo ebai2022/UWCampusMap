@@ -1,3 +1,8 @@
 Briefly list any changes you made to your graph class during hw-pathfinder,
 and why you made those changes.
 
+I just changed the entire graph to generics as given with the nodes (parent and child) as
+a type and the edges as a type. I also changed the script test drvier and the junit tests to
+take in parameters of type string, since that is what all my tests were dealing with.
+I changed marvelpaths and the test driver to also take parameters of type string because that
+is what the marvel universe is dealing with (comic book strings and character name strings)

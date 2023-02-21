@@ -26,7 +26,7 @@ public class MarvelTestDriver {
     /**
      * String -> Graph: maps the names of graphs to the actual graph
      **/
-    private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+    private final Map<String, Graph<String, String>> graphs = new HashMap<>();
     private final PrintWriter output;
     private final BufferedReader input;
     // Leave this constructor public
@@ -119,7 +119,7 @@ public class MarvelTestDriver {
 
     private void createGraph(String graphName) {
         // TODO Insert your code here.
-        graphs.put(graphName, new Graph());
+        graphs.put(graphName, new Graph<>());
         output.println("created graph " + graphName);
     }
 
@@ -136,7 +136,7 @@ public class MarvelTestDriver {
 
     private void addNode(String graphName, String nodeName) {
         // TODO Insert your code here.
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         g.addNode(nodeName);
         output.println("added node " + nodeName + " to " + graphName);
     }
@@ -156,7 +156,7 @@ public class MarvelTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         g.addEdge(parentName, childName, edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " + childName + " in " + graphName);
     }
@@ -171,7 +171,7 @@ public class MarvelTestDriver {
     }
 
     private void listNodes(String graphName) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         output.print(graphName + " contains:");
         List<String> nodes = new ArrayList<>(g.listNodes());
         //alphabetize
@@ -193,7 +193,7 @@ public class MarvelTestDriver {
     }
 
     private void listChildren(String graphName, String parentName) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         output.print("the children of " + parentName + " in " + graphName + " are:");
         List<String> sortedChildren = new ArrayList<>(g.listChildren(parentName).keySet());
         //alphabetize
@@ -236,7 +236,7 @@ public class MarvelTestDriver {
         findPath(graphName, nodeA, nodeB);
     }
     private void findPath(String graphName, String nodeA, String nodeB){
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         List<String> path = MarvelPaths.findPath(g, nodeA, nodeB);
         if (!g.containsNode(nodeA) && !g.containsNode(nodeB)){
             output.println("unknown: " + nodeA);

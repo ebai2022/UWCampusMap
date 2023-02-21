@@ -8,8 +8,8 @@ import java.util.*;
 
 public class MarvelPathsTest {
 
-    Graph f = new Graph();
-    Graph g = new Graph();
+    Graph<String, String> f = new Graph<>();
+    Graph<String, String> g = new Graph<>();
 
     @Before
     public void constructGraphForBuildGraph(){
@@ -47,7 +47,7 @@ public class MarvelPathsTest {
 
     @Test
     public void sameNodesInGraph(){
-        Graph f = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        Graph<String, String> f = MarvelPaths.buildGraph("staffSuperheroes.csv");
         for (String parent : g.listNodes()) {
             assertTrue(f.containsNode(parent));
         }
@@ -55,7 +55,7 @@ public class MarvelPathsTest {
 
     @Test
     public void sameChildrenInGraph(){
-        Graph f = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        Graph<String, String> f = MarvelPaths.buildGraph("staffSuperheroes.csv");
         for (String parent : g.listNodes()) {
             assertTrue(f.containsNode(parent));
             for (String children : g.listChildren(parent).keySet()) {
@@ -66,7 +66,7 @@ public class MarvelPathsTest {
 
     @Test
     public void sameEdgesInGraph(){
-        Graph f = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        Graph<String, String> f = MarvelPaths.buildGraph("staffSuperheroes.csv");
         for (String parent : g.listNodes()){
             assertTrue(f.containsNode(parent));
             for (String children : g.listChildren(parent).keySet()){
@@ -80,8 +80,7 @@ public class MarvelPathsTest {
 
     @Test
     public void testFindPathSingle(){
-        Graph f = MarvelPaths.buildGraph("staffSuperheroes.csv");
-        List<String> path = MarvelPaths.findPath(f, "Ernst-the-Bicycling-Wizard", "Notkin-of-the-Superhuman-Beard");
+        Graph<String, String> f = MarvelPaths.buildGraph("staffSuperheroes.csv");
         List<String> expected = new ArrayList<>();
         expected.add("Ernst-the-Bicycling-Wizard");
         expected.add("CSE331");

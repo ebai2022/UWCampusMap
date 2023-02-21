@@ -5,9 +5,9 @@ import java.util.*;
 /**
  * Graph represents a mutable collection of nodes and the respective edges that connect nodes
  */
-public class Graph {
+public class Graph<K, V> {
 
-    private Map<String, Map<String, Set<String>>> nodes;
+    private Map<K, Map<K, Set<V>>> nodes;
 
     private final boolean ExpensiveCheck = false;
 
@@ -40,24 +40,24 @@ public class Graph {
         // set means that all edges are automatically unique, so we cannot have duplicate edges from node A to node B
         if (ExpensiveCheck){
             // check no nulls
-            for (String parent : nodes.keySet()){
+            for (K parent : nodes.keySet()){
                 assert(parent != null) : "null parent";
-                for (String child : nodes.get(parent).keySet()){
+                for (K child : nodes.get(parent).keySet()){
                     assert (child != null) : "null child";
-                    for (String edge : nodes.get(parent).get(child)){
+                    for (V edge : nodes.get(parent).get(child)){
                         assert (edge != null) : "null edge";
                     }
                 }
             }
             // check if all children are also a parent node
-            for (String parent : nodes.keySet()){
-                for (String child : nodes.get(parent).keySet()){
+            for (K parent : nodes.keySet()){
+                for (K child : nodes.get(parent).keySet()){
                     assert(nodes.containsKey(child) == true) : "missing parent node";
                 }
             }
             // check if all children have at least one edge
-            for (String parent : nodes.keySet()){
-                for (String child : nodes.get(parent).keySet()){
+            for (K parent : nodes.keySet()){
+                for (K child : nodes.get(parent).keySet()){
                     assert(nodes.get(parent).get(child) != null) : "no edges connecting parent and child";
                 }
             }
@@ -75,7 +75,7 @@ public class Graph {
      * @spec.effects adds an edge with the label between the parent and the child nodes. If the parent or child does not
      * exist in the graph, or the label is not unique, nothing is added
      */
-    public void addEdge(String parent, String child, String label){
+    public void addEdge(K parent, K child, V label){
         checkRep();
         if (nodes.containsKey(parent) && nodes.containsKey(child)){
             if (!nodes.get(parent).containsKey(child)){
@@ -95,7 +95,7 @@ public class Graph {
      * @spec.requires data != null
      * @spec.effects adds a node to the graph. If the node is not unique, the node is not added
      */
-    public void addNode(String data){
+    public void addNode(K data){
         checkRep();
         if (!nodes.containsKey(data)){
             nodes.put(data, new HashMap<>());
@@ -110,9 +110,9 @@ public class Graph {
      * @return the map of children associated with the parent and their respective edges
      * @spec.requires parent != null, graph contains parent
      */
-    public Map<String, Set<String>> listChildren(String parent){
+    public Map<K, Set<V>> listChildren(K parent){
         checkRep();
-        Map<String, Set<String>> children = new HashMap<>(nodes.get(parent));
+        Map<K, Set<V>> children = new HashMap<>(nodes.get(parent));
         checkRep();
         return children;
     }
@@ -122,9 +122,9 @@ public class Graph {
      *
      * @return the list of nodes contained within this graph
      */
-    public List<String> listNodes(){
+    public List<K> listNodes(){
         checkRep();
-        List<String> allNodes = new ArrayList<>(nodes.keySet());
+        List<K> allNodes = new ArrayList<>(nodes.keySet());
         checkRep();
         return allNodes;
     }
@@ -135,7 +135,7 @@ public class Graph {
      * @param node the data that represents the node
      * @return true if the node is contained in this, false otherwise
      */
-    public boolean containsNode(String node){
+    public boolean containsNode(K node){
         checkRep();
         return nodes.containsKey(node);
     }
