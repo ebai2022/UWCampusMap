@@ -19,6 +19,7 @@ import java.util.List;
  * This represents an immutable path between two nodes, particularly
  * Path#getStart() and Path#getEnd(). Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
+ * T represents the node type for the given path
  */
 public class Path<T> implements Iterable<Path<T>.Segment> {
 
