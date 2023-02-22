@@ -59,7 +59,8 @@ public class MarvelPaths {
     }
 
     /**
-     * Builds a graph from a given file name
+     * Builds a graph from a given file name using data from that file. The nodes
+     * represent character names while the edges represent comic book names
      *
      * @param fileName the file with data used to build the graph
      * @spec.requires filename is a valid file in the resources/data folder.

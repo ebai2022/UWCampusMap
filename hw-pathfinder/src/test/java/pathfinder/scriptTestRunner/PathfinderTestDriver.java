@@ -14,7 +14,6 @@ package pathfinder.scriptTestRunner;
 import graph.Graph;
 import pathfinder.ShortestPath;
 import pathfinder.datastructures.Path;
-import pathfinder.datastructures.Point;
 
 import java.io.*;
 import java.util.*;
