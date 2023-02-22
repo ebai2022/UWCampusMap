@@ -1,1 +1,14 @@
 # Testing finding paths in a graph with multiple hops
+
+CreateGraph g
+
+AddNode g n1
+AddNode g n2
+AddNode g n3
+AddNode g n4
+
+AddEdge g n1 n2 5.0
+AddEdge g n2 n3 10.0
+AddEdge g n3 n4 5.0
+
+FindPath g n1 n4
