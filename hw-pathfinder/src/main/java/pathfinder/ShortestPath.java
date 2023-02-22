@@ -26,24 +26,24 @@ public class ShortestPath {
     // set of nodes for finished
 
     /**
+     * Finds the shortest path from a node to another node in the given graph. Shortest is defined by the path
+     * that costs the least
      *
-     * @param g the
-     * @param node1 the
-     * @param node2 the
-     * @return null if there is no path, or
-     * @param <N> the
-     * @param <E> the
+     * @param g the graph to use to find the shortest path in
+     * @param start the node to start on
+     * @param end the node to end on
+     * @return a path between the start and end nodes. Returns null if there is no path
+     * @param <N> the type for the nodes
+     * @param <E> the type for the edges. Must be a subtype of number
      */
-    public static <N, E extends Number> Path<N> findPath(Graph<N, E> g, N node1, N node2){
-        N start = node1;
-        N destination = node2;
+    public static <N, E extends Number> Path<N> findPath(Graph<N, E> g, N start, N end){
         Queue<Path<N>> active = new PriorityQueue<>(Comparator.comparingDouble(Path::getCost));
         Set<N> finished = new HashSet<>();
         active.add(new Path<>(start));
         while (!active.isEmpty()) {
             Path<N> minPath = active.remove();
             N minDest = minPath.getEnd();
-            if (minDest.equals(destination)){
+            if (minDest.equals(end)){
                 return minPath;
             }
             if (finished.contains(minDest)){

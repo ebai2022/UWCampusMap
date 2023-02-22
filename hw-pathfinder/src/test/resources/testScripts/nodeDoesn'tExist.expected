@@ -1,0 +1,16 @@
+# Testing the node not being in the graph
+
+created graph g
+
+added node n1 to g
+added node n2 to g
+
+# Testing if the first node doesn't exist
+unknown: n3
+
+# Testing if the second node doesn't exist
+unknown: n3
+
+# Testing if both nodes don't exist
+unknown: n3
+unknown: n4

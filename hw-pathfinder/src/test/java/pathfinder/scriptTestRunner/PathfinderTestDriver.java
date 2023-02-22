@@ -200,7 +200,7 @@ public class PathfinderTestDriver {
         Collections.sort(sortedChildren);
         for (String child : sortedChildren){
             List<Double> sortEdges = new ArrayList<>(g.listChildren(parentName).get(child));
-            //alphabetize
+            //numerical ordering
             Collections.sort(sortEdges);
             for (Double edge : sortEdges){
                 output.print(" " + child);
@@ -222,7 +222,6 @@ public class PathfinderTestDriver {
     }
     private void findPath(String graphName, String nodeA, String nodeB){
         Graph<String, Double> g = graphs.get(graphName);
-        Path<String> path = ShortestPath.findPath(g, nodeA, nodeB);
         if (!g.containsNode(nodeA) && !g.containsNode(nodeB)){
             output.println("unknown: " + nodeA);
             output.println("unknown: " + nodeB);
@@ -232,6 +231,7 @@ public class PathfinderTestDriver {
             output.println("unknown: " + nodeB);
         }
         else {
+            Path<String> path = ShortestPath.findPath(g, nodeA, nodeB);
             output.println("path from " + nodeA + " to " + nodeB + ":");
             if (path == null){
                 output.println("no path found");

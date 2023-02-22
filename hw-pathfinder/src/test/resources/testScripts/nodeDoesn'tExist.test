@@ -1,0 +1,15 @@
+# Testing the node not being in the graph
+
+CreateGraph g
+
+AddNode g n1
+AddNode g n2
+
+# Testing if the first node doesn't exist
+FindPath g n3 n1
+
+# Testing if the second node doesn't exist
+FindPath g n1 n3
+
+# Testing if both nodes don't exist
+FindPath g n3 n4
