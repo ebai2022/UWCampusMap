@@ -69,6 +69,7 @@ public class CampusMap implements ModelAPI {
             //edges are one directional
             campusGraph.addEdge(startNode, endNode, path.getDistance());
         }
+        checkRep();
     }
 
     /**
@@ -77,19 +78,30 @@ public class CampusMap implements ModelAPI {
     private void checkRep() {
         assert(campusBuildings != null);
         assert(campusGraph != null);
+        if(expensiveChecks){
+            for (String name : campusBuildings.keySet()){
+                assert(name != null);
+                assert(campusBuildings.get(name) != null);
+            }
+        }
     }
 
     /**
+     * Checks if the short name of the building exists in this campus map
+     *
      * @param shortName The short name of a building to query.
      * @return {@literal true} iff the short name provided exists in this campus map.
      */
     @Override
     public boolean shortNameExists(String shortName) {
         // TODO: Implement this method exactly as it is specified in ModelAPI
+        checkRep();
         return campusBuildings.containsKey(shortName);
     }
 
     /**
+     * Gets the long name of a building from its short name
+     *
      * @param shortName The short name of a building to look up.
      * @return The long name of the building corresponding to the provided short name.
      * @throws IllegalArgumentException if the short name provided does not exist.
@@ -100,20 +112,25 @@ public class CampusMap implements ModelAPI {
         if (!campusBuildings.containsKey(shortName)){
             throw new IllegalArgumentException();
         }
+        checkRep();
         return campusBuildings.get(shortName).getLongName();
     }
 
     /**
+     * Gets all the building names (short and long) in the campus map
+     *
      * @return A mapping from all the buildings' short names to their long names in this campus map.
      */
     @Override
     public Map<String, String> buildingNames() {
         // TODO: Implement this method exactly as it is specified in ModelAPI
+        checkRep();
         Map<String, String> allNames = new HashMap<>();
-        // double check that short names are unique? I think they are
         for (String shortName : campusBuildings.keySet()){
+            // node names are unique so we don't have to worry about erasing names
             allNames.put(shortName, campusBuildings.get(shortName).getLongName());
         }
+        checkRep();
         return allNames;
     }
 
@@ -131,6 +148,7 @@ public class CampusMap implements ModelAPI {
     @Override
     public Path<Point> findShortestPath(String startShortName, String endShortName) {
         // TODO: Implement this method exactly as it is specified in ModelAPI
+        checkRep();
         if (startShortName == null || endShortName == null || !campusBuildings.containsKey(startShortName)
                 || !campusBuildings.containsKey(endShortName)){
             throw new IllegalArgumentException();
@@ -139,7 +157,7 @@ public class CampusMap implements ModelAPI {
                 campusBuildings.get(startShortName).getY());
         Point endNode = new Point(campusBuildings.get(endShortName).getX(),
                 campusBuildings.get(endShortName).getY());
+        checkRep();
         return ShortestPath.findPath(campusGraph, startNode, endNode);
     }
-
 }
