@@ -1,0 +1,22 @@
+# Tests the different behavior of list children
+
+CreateGraph g
+
+AddNode g n1
+AddNode g n2
+AddNode g n3
+
+# No children
+ListChildren g n1
+
+# One child
+AddEdge g n1 n2 5.0
+ListChildren g n1
+
+# Multiple edges from same node
+AddEdge g n1 n2 10.0
+ListChildren g n1
+
+# Multiple edges from same and different nodes
+AddEdge g n1 n3 3.0
+ListChildren g n1
