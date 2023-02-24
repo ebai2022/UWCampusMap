@@ -258,16 +258,12 @@ public class Path<T> implements Iterable<Path<T>.Segment> {
             this.start = start;
             this.end = end;
             this.cost = cost;
-            // checkRep not necessary: it's impossible for this constructor to create a Segment that
-            // violates the rep invariant because of the exception check, and all fields are final
-            // and immutable themselves.
         }
 
         /**
          * @return The beginning node of this segment.
          */
         public T getStart() {
-            // Note: Since nodes are immutable, this isn't rep exposure.
             return this.start;
         }
 
