@@ -41,7 +41,7 @@ class Map extends Component<MapProps, MapState> {
           />
           {
             // TODO: Render map lines here using the MapLine component. E.g.
-            // <MapLine key={key1} color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
+            //<MapLine key={key1} color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
             // will draw a red line from the point 1000,1000 to 2000,2000 on the
             // map 
           }
