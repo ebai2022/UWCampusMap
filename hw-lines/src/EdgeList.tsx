@@ -16,6 +16,8 @@ interface EdgeListProps {
     onChange(edges: MapLine[]): void;  // called when a new edge list is ready
                                  // TODO: once you decide how you want to communicate the edges to the App, you should
                                  // change the type of edges so it isn't `any`
+
+    //how do i communicate this stuff back to the app whatever and then to map???
 }
 // FEAT ELIJAH: DEFINE A STATE and make it hold the value variable. USE A CONSTRUCTOR
 interface EdgeState{
@@ -38,17 +40,33 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
     }
 
     //maybe this should return a MapLine?
-    parseString = (s: string): MapLine => {
-        let stringEdges = s.split(" ");
-        // check whether the coordinates are 0<=x<=4000
-        let numEdges = new MapLine({
-            color: stringEdges[0],
-            x1: stringEdges[1],
-            y1: stringEdges[2],
-            x2: stringEdges[3],
-            y2: stringEdges[4],
-        })
-        return numEdges;
+    parseString = (s: string): MapLine | undefined=> {
+        let stringEdges = s.trim().split(" ");
+        if (stringEdges.length != 5){
+            // CHECK IF COLOR IS FIRST OR LAST
+            alert("bad input! Input must be in the form of: color x1 x2 y1 y2")
+        } else{
+            // can check if these are numbers (isNaN function)
+            let firstX = parseFloat(stringEdges[1])
+            let firstY = parseFloat(stringEdges[2])
+            let secondX = parseFloat(stringEdges[3])
+            let secondY = parseFloat(stringEdges[4])
+            // check whether the coordinates are 0<=x<=4000
+            if (firstX < 0 || firstX > 4000){
+                alert("bad input! all coordinates must be between 0 and 4000 (inclusive)")
+            } else{
+                let numEdges = new MapLine({
+                    color: stringEdges[0],
+                    x1: firstX,
+                    y1: firstY,
+                    x2: secondX,
+                    y2: secondY,
+                })
+                return numEdges;
+            }
+        }
+        // check if this screws something up with null pointers
+        return undefined;
     }
     render() {
         return (
@@ -57,32 +75,37 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
                 <textarea
                     rows={5}
                     cols={30}
-                    onChange={(e) => {this.changeName(e)}}
+                    onChange={(e) => this.setState({textInfo: e.target.value})}
                     value={this.state.textInfo}
                 /> <br/>
-                <button onClick={(f) => {this.drawLines(f)}}>Draw</button>
-                <button onClick={(g) => {this.clearConsole(g)}}>Clear</button>
+                <button onClick={() => {this.drawLines()}}>Draw</button>
+                <button onClick={() => this.setState({textInfo: "", drawEdges: []})}>Clear</button>
             </div>
         );
     }
 
-    changeName(e: React.ChangeEvent<HTMLTextAreaElement>) {
-        this.setState({textInfo: e.target.value});
-    }
-
+    //changeName(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    //    this.setState({textInfo: e.target.value});
+    //}
     //FIGURE THIS OUT - store in an array of maplines?
-    drawLines(f: React.MouseEvent<HTMLButtonElement>){
-        let arrayOfLines = f.currentTarget.value.split('\n');
-        let arrayOfMapLines = Array<MapLine>();
+    drawLines(){
+        // TODO: validate user input
+        // should this take f or should it take textInfo?
+        let arrayOfLines = this.state.textInfo.split('\n')
+        //let arrayOfLines = f.currentTarget.value.split('\n');
+        let arrayOfMapLines = Array<MapLine>()
         for (let i = 0; i < arrayOfLines.length; i++){
-            arrayOfMapLines.push(this.parseString(arrayOfLines[i]));
+            let m = this.parseString(arrayOfLines[i])
+            if (m != undefined){
+                arrayOfMapLines.push(m)
+            }
         }
         this.setState({drawEdges: arrayOfMapLines})
     }
-
-    clearConsole(g: React.MouseEvent<HTMLButtonElement>){
-        this.setState({textInfo: ""})
-    }
+    //clearConsole(g: React.MouseEvent<HTMLButtonElement>){
+        // make this clear the lines, not just the box
+    //    this.setState({textInfo: "", drawEdges: []})
+    //}
 }
 
 export default EdgeList;
