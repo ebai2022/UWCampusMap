@@ -21,17 +21,21 @@ const position: LatLngExpression = [UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER];
 
 interface MapProps {
   // TODO: Define the props of this component. You will want to pass down edges
-    edges: MapLine[]
+    edges: MapLine[] // the MapLines that will be drawn
 }
 
 interface MapState {}
 
+/**
+ * Draws the edges that have been obtained from the user onto the map
+ */
 class Map extends Component<MapProps, MapState> {
 
   render() {
+      // creating an array of all the MapLines for rendering
       const arrayOfEdges: JSX.Element[] = [];
-      for (let i = 0; i < this.props.edges.length; i++){
-          let current = this.props.edges;
+      let current = this.props.edges;
+      for (let i = 0; i < current.length; i++){
           let lineColor = current[i].props.color;
           let firstX = current[i].props.x1;
           let firstY = current[i].props.y1;

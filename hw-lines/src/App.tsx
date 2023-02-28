@@ -18,9 +18,12 @@ import "./App.css";
 import MapLine from "./MapLine";
 
 interface AppState {
-    edgeList: MapLine[]
+    edgeList: MapLine[] // the MapLines that have been parsed from the users' input
 }
 
+/**
+ * Takes edges from the users actions and then draws them
+ */
 class App extends Component<{}, AppState> { // <- {} means no props.
 
   constructor(props: any) {
@@ -43,7 +46,6 @@ class App extends Component<{}, AppState> { // <- {} means no props.
           onChange={(value) => {
             // TODO: Modify this onChange callback to store the edges in the state
               this.setState({edgeList: value});
-              //WHY IS THIS NOT BEING CALLED? or at least I don't think so
           }}
         />
       </div>
