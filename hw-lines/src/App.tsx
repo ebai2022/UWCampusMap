@@ -19,7 +19,6 @@ import MapLine from "./MapLine";
 
 interface AppState {
     edgeList: MapLine[]
-    // have lines?
 }
 
 class App extends Component<{}, AppState> { // <- {} means no props.
@@ -44,15 +43,12 @@ class App extends Component<{}, AppState> { // <- {} means no props.
           onChange={(value) => {
             // TODO: Modify this onChange callback to store the edges in the state
               this.setState({edgeList: value});
+              //WHY IS THIS NOT BEING CALLED? or at least I don't think so
           }}
         />
       </div>
     );
   }
-
-  //edgeStorage(value: MapLine[]): void{
-  //    this.setState({edgeList: value});
-  //}
 }
 
 export default App;

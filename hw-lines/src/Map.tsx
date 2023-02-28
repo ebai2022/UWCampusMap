@@ -15,8 +15,6 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MapLine from "./MapLine";
 import { UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER } from "./Constants";
-import EdgeList from "./EdgeList";
-import any = jasmine.any;
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = [UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER];
@@ -54,29 +52,15 @@ class Map extends Component<MapProps, MapState> {
           />
           {
             // TODO: Render map lines here using the MapLine component. E.g.
-            //<MapLine key={i} color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
+            //<MapLine key={0} color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
             // will draw a red line from the point 1000,1000 to 2000,2000 on the
             // map
               arrayOfEdges
-
-            //do i use a for loop and just go through each element and render?
-
           }
         </MapContainer>
       </div>
     );
   }
-    printLines(): void{
-      for (let i = 0; i < this.props.edges.length; i++){
-          let current = this.props.edges;
-          let lineColor = current[i].props.color;
-          let firstX = current[i].props.x1;
-          let firstY = current[i].props.y1;
-          let secondX = current[i].props.x2;
-          let secondY = current[i].props.y2;
-          <MapLine key={i} color={lineColor} x1={firstX} y1={firstY} x2={secondX} y2={secondY}/>
-      }
-    }
 }
 
 export default Map;
