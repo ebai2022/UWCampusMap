@@ -31,7 +31,7 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            textInfo: "delete this and type stuff here!",
+            textInfo: "delete this and type lines to draw here! Please input in the format of 'x1 y1 x2 y2 color'",
             drawEdges: []
         }
     }
@@ -79,8 +79,6 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
     /**
      * helper method for drawLines. Handles the parsing of each line and responds to bad user input.
      * input should be in the form "x1 y1 x2 y2 color"
-     *
-     * @param s the string to parse
      */
     parseString = (s: string): MapLine | undefined=> {
         let stringEdges = s.trim().split(" ");
@@ -92,12 +90,12 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
             let firstY = parseFloat(stringEdges[1])
             let secondX = parseFloat(stringEdges[2])
             let secondY = parseFloat(stringEdges[3])
-            // can check if these are numbers (isNaN function)
+            // check if every number input is actually a number
             if (isNaN(firstX) || isNaN(firstY) || isNaN(secondX) || isNaN(secondY)){
                 alert("bad input! all the coordinates (x1 y1 x2 y2) must be numbers!")
             }
             // check whether the coordinates are 0<=x<=4000
-            if (firstX < 0 || firstX > 4000 || firstY < 0 || firstY > 4000 || secondX < 0 || secondX > 4000 || secondY < 0 || secondY > 4000){
+            else if (firstX < 0 || firstX > 4000 || firstY < 0 || firstY > 4000 || secondX < 0 || secondX > 4000 || secondY < 0 || secondY > 4000){
                 alert("bad input! all coordinates must be between 0 and 4000 (inclusive)")
             } else{
                 let numEdges = new MapLine({
