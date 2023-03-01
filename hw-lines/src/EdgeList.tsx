@@ -86,10 +86,10 @@ class EdgeList extends Component<EdgeListProps, EdgeState> {
         if (stringEdges.length !== 5){
             alert("bad input! Input must be in the form of: x1 y1 x2 y2 color")
         } else{
-            let firstX = parseFloat(stringEdges[0])
-            let firstY = parseFloat(stringEdges[1])
-            let secondX = parseFloat(stringEdges[2])
-            let secondY = parseFloat(stringEdges[3])
+            let firstX : number = Number(stringEdges[0])
+            let firstY : number = Number(stringEdges[1])
+            let secondX : number = Number(stringEdges[2])
+            let secondY : number = Number(stringEdges[3])
             // check if every number input is actually a number
             if (isNaN(firstX) || isNaN(firstY) || isNaN(secondX) || isNaN(secondY)){
                 alert("bad input! all the coordinates (x1 y1 x2 y2) must be numbers!")
