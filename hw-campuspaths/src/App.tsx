@@ -18,6 +18,7 @@ import RouteEdges from "./RouteEdges";
 
 interface AppState{
     edgeList: MapLine[] // the MapLines that have been parsed from the users' input
+    buildingList: string[]
 }
 /**
  * Takes two buildings from the users actions and then draws the shortest path between them
@@ -28,7 +29,8 @@ class App extends Component<{}, AppState> {
         super(props);
         this.state = {
             // TODO: store edges in this state
-            edgeList: []
+            edgeList: [],
+            buildingList: []
         };
     }
     render() {
@@ -40,6 +42,9 @@ class App extends Component<{}, AppState> {
                     <Map edges={this.state.edgeList}/>
                 </div>
                 <RouteEdges
+                    onLoad={(names) =>
+                        this.setState({buildingList: names})
+                    }
                     onChange={(value) => {
                         // TODO: Modify this onChange callback to store the edges in the state
                         this.setState({edgeList: value});

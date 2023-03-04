@@ -3,11 +3,15 @@ import MapLine from "./MapLine";
 
 interface EdgeListProps {
     onChange(edges: MapLine[]): void;  // called when a new edge list is ready
+    onLoad(buildings: string[]): void;
+
 }
 
 interface EdgeState{
-    textInfo: string;// way to store the drop-down menu information?
     drawEdges: MapLine[]; // the MapLines that have been parsed from the users' input
+    buildingNames: string[];
+    startBuilding: string;
+    endBuilding: string;
 }
 
 
@@ -39,32 +43,61 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            textInfo: "",
             drawEdges: [],
+            buildingNames: [],
+            startBuilding: "",
+            endBuilding: ""
         }
     }
-    /*
+
     componentDidMount() {
-        this.testJsonInput();
+        this.getBuildings();
     }
-    */
+
     render() {
+        let list: any[] = [];
+        list.push(<option>Select</option>)
+        for(let i = 0; i < this.state.buildingNames.length; i++){
+            list.push(<option value={this.state.buildingNames[i]}>{this.state.buildingNames[i]}</option>)
+        }
         return (
             <div id="edge-list">
-                Edges <br/>
-                <textarea
-                    // change this to a non text area?
-                    rows={5}
-                    cols={30}
-                    onChange={(e) => this.setState({textInfo: e.target.value})}
-                    value={this.state.textInfo}
-                /> <br/>
-                <button onClick={() => {this.testJsonInput()}}>Draw</button>
+                Enter your start location!
+                <br/>
+                <select onLoad={(names) => this.getBuildings}
+                    placeholder={"choose a building to start!"}
+                    value={this.state.startBuilding}
+                    onChange={(e) => this.setStart(e.target.value)}
+                >
+                    {list}
+                </select>
+                <br/>
+                Enter your end location!
+                <br/>
+                <select onLoad={(names) => this.getBuildings}
+                        placeholder={"choose a building to end!"}
+                        value={this.state.endBuilding}
+                        onChange={(e) => this.setEnd(e.target.value)}
+                >
+                    {list}
+                </select>
+                <br/>
+                <button onClick={() => {this.getPaths()}}>Draw</button>
+                <br/>
                 <button onClick={() => this.clearConsole()}>Clear</button>
-
+                <br/>
             </div>
         );
     }
+
+    setStart(e: string): void{
+        this.setState({startBuilding: e});
+    }
+
+    setEnd(e: string): void{
+        this.setState({endBuilding: e});
+    }
+
 
     /**
      * clears the lines on the screen
@@ -74,15 +107,36 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
         this.props.onChange([])
     }
 
+    getBuildings = async () => {
+        try{
+            let response = await fetch('http://localhost:4567/buildingNames');
+            if (!response.ok){
+                alert("The status is wrong! Expected: 200, Was: " + response.status);
+                return;
+            }
+            let object = (await response.json()) as string[];
+            if (object === undefined){
+                alert("json parsing failed!");
+            }
+            let buildings = Array<string>();
+            for (let i = 0; i < object.length; i++){
+                buildings.push(object[i]);
+                console.log(object[i])
+            }
+            this.setState({buildingNames: buildings})
+        } catch(e){
+            alert("There was an error contacting the server.");
+            console.log(e);
+        }
+    };
+
+
     /**
      * main function for drawing the lines from given user input
      */
-    testJsonInput = async () => {
+    getPaths = async () => {
         try{
-            let arr = this.state.textInfo.split(' ');
-            let i = arr[0];
-            let j = arr[1];
-            let response = await fetch('http://localhost:4567/findPath?start=' + i + '&end=' + j);
+            let response = await fetch('http://localhost:4567/findPath?start=' + this.state.startBuilding + '&end=' + this.state.endBuilding);
             if (!response.ok){
                 alert("The status is wrong! Expected: 200, Was: " + response.status);
                 return;
@@ -112,6 +166,7 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
             console.log(e);
         }
     };
+
 
 }
 
