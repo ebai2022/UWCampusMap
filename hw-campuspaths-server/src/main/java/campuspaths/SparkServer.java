@@ -22,7 +22,11 @@ import spark.Route;
 import spark.Spark;
 import java.util.*;
 
+/**
+ * runs the server that supports the campus map application
+ */
 public class SparkServer {
+
 
     public static void main(String[] args) {
         CORSFilter corsFilter = new CORSFilter();
@@ -34,6 +38,7 @@ public class SparkServer {
 
         // TODO: Create all the Spark Java routes you need here.
         CampusMap map = new CampusMap("campus_buildings.csv", "campus_paths.csv");
+        // handling all the building names for our mapping options
         Spark.get("/buildingNames", new Route(){
             @Override
             public Object handle(Request request, Response response) throws Exception {
@@ -43,17 +48,18 @@ public class SparkServer {
                 return jsonResponse;
             }
         });
+        // handling path finding applications
         Spark.get("/findPath", new Route(){
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 // don't need error handling because we will have a dropdown box and exactly what input we are giving
-                //http://localhost:4567/findPath?start=CSE&end=KNE calls findPath with start building being CSE and end being KNE
                 String startBuilding = request.queryParams("start");
                 String endBuilding = request.queryParams("end");
                 Path<Point> shortestPath = map.findShortestPath(startBuilding, endBuilding);
-                //if (startBuilding == null || endBuilding == null || !map.shortNameExists(startBuilding) || !map.shortNameExists(endBuilding)){
-                //    Spark.halt(400, "hwhooooops");
-                //}
+                // not useful error handling?
+                if (startBuilding == null || endBuilding == null || !map.shortNameExists(startBuilding) || !map.shortNameExists(endBuilding) || shortestPath == null){
+                    Spark.halt(400, "Null pointers cause problems!");
+                }
                 Gson gson = new Gson();
                 String jsonResponse = gson.toJson(shortestPath);
                 return jsonResponse;

@@ -25,12 +25,23 @@ const position: LatLngExpression = [UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER];
 
 interface MapProps {
   // TODO: Define the props of this component.
+    edges: MapLine[] // the MapLines that will be drawn
 }
 
 interface MapState {}
 
 class Map extends Component<MapProps, MapState> {
   render() {
+      const arrayOfEdges: JSX.Element[] = [];
+      let current = this.props.edges;
+      for (let i = 0; i < current.length; i++){
+          let lineColor = current[i].props.color;
+          let firstX = current[i].props.x1;
+          let firstY = current[i].props.y1;
+          let secondX = current[i].props.x2;
+          let secondY = current[i].props.y2;
+          arrayOfEdges.push(<MapLine key={i} color={lineColor} x1={firstX} y1={firstY} x2={secondX} y2={secondY}/>)
+      }
     return (
       <div id="map">
         <MapContainer
@@ -47,6 +58,7 @@ class Map extends Component<MapProps, MapState> {
             // <MapLine key="key1" color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
             // will draw a red line from the point 1000,1000 to 2000,2000 on the
             // map. Note that key should be a unique key that only this MapLine has.
+              arrayOfEdges
           }
         </MapContainer>
       </div>
