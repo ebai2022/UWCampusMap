@@ -3,15 +3,14 @@ import MapLine from "./MapLine";
 
 interface EdgeListProps {
     onChange(edges: MapLine[]): void;  // called when a new edge list is ready
-    onLoad(buildings: string[]): void;
 
 }
 
 interface EdgeState{
     drawEdges: MapLine[]; // the MapLines that have been parsed from the users' input
-    buildingNames: string[];
-    startBuilding: string;
-    endBuilding: string;
+    buildingNames: string[]; // all the short building names on campus map
+    startBuilding: string; // the building the start at
+    endBuilding: string; // the building to end at
 }
 
 
@@ -34,8 +33,8 @@ interface Point {
 
 
 /**
- * CHANGE THIS A text field that allows the user to enter the list of edges.
- * AND THIS Also contains the buttons that the user will use to interact with the app.
+ * Drop down menus that allow the user to select two buildings and see the shortest path between them
+ * Also contains the buttons that the user will use to draw and clear that path
  */
 // do I need to extend path/segment/point?
 class RouteEdges extends Component<EdgeListProps, EdgeState> {
@@ -50,11 +49,14 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
         }
     }
 
+    // instantly loads in the buildings when the page is set
     componentDidMount() {
         this.getBuildings();
     }
 
     render() {
+        // WHAT DOES UNIQUE KEY VALUE PAIRS LOOK LIKE?
+        // creates all the options for the selection
         let list: any[] = [];
         list.push(<option>Select</option>)
         for(let i = 0; i < this.state.buildingNames.length; i++){
@@ -62,27 +64,29 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
         }
         return (
             <div id="edge-list">
-                Enter your start location!
+                Choose your start location!
                 <br/>
-                <select onLoad={(names) => this.getBuildings}
-                    placeholder={"choose a building to start!"}
+                <select
                     value={this.state.startBuilding}
                     onChange={(e) => this.setStart(e.target.value)}
                 >
                     {list}
                 </select>
                 <br/>
-                Enter your end location!
+                Choose your end location!
                 <br/>
-                <select onLoad={(names) => this.getBuildings}
-                        placeholder={"choose a building to end!"}
+                <select
                         value={this.state.endBuilding}
                         onChange={(e) => this.setEnd(e.target.value)}
                 >
                     {list}
                 </select>
                 <br/>
+                Press Draw to see the shortest path between your two buildings!
+                <br/>
                 <button onClick={() => {this.getPaths()}}>Draw</button>
+                <br/>
+                Press Clear to reset the entire application!
                 <br/>
                 <button onClick={() => this.clearConsole()}>Clear</button>
                 <br/>
@@ -90,23 +94,32 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
         );
     }
 
+    /**
+     * sets the start building's short name
+     */
     setStart(e: string): void{
         this.setState({startBuilding: e});
     }
 
+    /**
+     * sets the end building's short name
+     */
     setEnd(e: string): void{
         this.setState({endBuilding: e});
     }
 
 
     /**
-     * clears the lines on the screen
+     * clears the page to reset everything to their initial states
      */
     clearConsole(){
-        this.setState({drawEdges: []})
+        this.setState({drawEdges: [], startBuilding: "", endBuilding: ""})
         this.props.onChange([])
     }
 
+    /**
+     * gets all the buildings that exist on campus as a list of their short names
+     */
     getBuildings = async () => {
         try{
             let response = await fetch('http://localhost:4567/buildingNames');
@@ -121,7 +134,7 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
             let buildings = Array<string>();
             for (let i = 0; i < object.length; i++){
                 buildings.push(object[i]);
-                console.log(object[i])
+                //console.log(object[i])
             }
             this.setState({buildingNames: buildings})
         } catch(e){
@@ -136,31 +149,42 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
      */
     getPaths = async () => {
         try{
-            let response = await fetch('http://localhost:4567/findPath?start=' + this.state.startBuilding + '&end=' + this.state.endBuilding);
-            if (!response.ok){
-                alert("The status is wrong! Expected: 200, Was: " + response.status);
-                return;
+            if (this.state.startBuilding === "" || this.state.endBuilding === "" ||
+                    this.state.endBuilding === "Select" || this.state.startBuilding === "Select"){
+                alert("boxes must be filled!")
+                // or I could honestly just clear the lines here or do nothing...hmmm
+                // double check that this doesn't royally screw anything up
+                this.setState({drawEdges: []})
+                this.props.onChange([])
+            } else {
+                //console.log(this.state.startBuilding)
+                //console.log(this.state.endBuilding)
+                let response = await fetch('http://localhost:4567/findPath?start=' +
+                    this.state.startBuilding + '&end=' + this.state.endBuilding);
+                if (!response.ok) {
+                    alert("The status is wrong! Expected: 200, Was: " + response.status);
+                    return;
+                }
+                let object = (await response.json()) as Path;
+                if (object === undefined) {
+                    alert("json parsing failed!");
+                }
+                //console.log(object);
+                let arrayOfMapLines = Array<MapLine>()
+                for (let i = 0; i < object.path.length; i++) {
+                    let numEdges = new MapLine({
+                        color: "red",
+                        x1: object.path[i].start.x,
+                        y1: object.path[i].start.y,
+                        x2: object.path[i].end.x,
+                        y2: object.path[i].end.y
+                    })
+                    //console.log(numEdges);
+                    arrayOfMapLines.push(numEdges);
+                }
+                this.setState({drawEdges: arrayOfMapLines})
+                this.props.onChange(arrayOfMapLines)
             }
-            let object = (await response.json()) as Path;
-            if (object === undefined){
-                alert("json parsing failed!");
-            }
-            console.log(object);
-            let arrayOfMapLines = Array<MapLine>()
-            for (let i = 0; i < object.path.length; i++){
-                let numEdges = new MapLine({
-                    color: "red",
-                    x1: object.path[i].start.x,
-                    y1: object.path[i].start.y,
-                    x2: object.path[i].end.x,
-                    y2: object.path[i].end.y
-                })
-                console.log(numEdges);
-                arrayOfMapLines.push(numEdges);
-            }
-            this.setState({drawEdges: arrayOfMapLines})
-            this.props.onChange(arrayOfMapLines)
-
         } catch(e){
             alert("There was an error contacting the server.");
             console.log(e);

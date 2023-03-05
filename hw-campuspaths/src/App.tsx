@@ -42,9 +42,6 @@ class App extends Component<{}, AppState> {
                     <Map edges={this.state.edgeList}/>
                 </div>
                 <RouteEdges
-                    onLoad={(names) =>
-                        this.setState({buildingList: names})
-                    }
                     onChange={(value) => {
                         // TODO: Modify this onChange callback to store the edges in the state
                         this.setState({edgeList: value});
