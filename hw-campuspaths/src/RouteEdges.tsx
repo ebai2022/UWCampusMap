@@ -8,7 +8,8 @@ interface EdgeListProps {
 
 interface EdgeState{
     drawEdges: MapLine[]; // the MapLines that have been parsed from the users' input
-    buildingNames: string[]; // all the short building names on campus map
+    buildingFullNames: string[]; // all the full building names on campus map
+    buildingShortNames: string[]; // all the short building names on campus map
     startBuilding: string; // the building the start at
     endBuilding: string; // the building to end at
 }
@@ -28,22 +29,22 @@ interface Segment{
 
 interface Point {
     x: number; // the x coordinate of the point
-    y: number; // the x coordinate of the point
+    y: number; // the y coordinate of the point
 }
 
 
 /**
- * Drop down menus that allow the user to select two buildings and see the shortest path between them
+ * Drop down menus that allow the user to select two buildings and see the shortest path between them.
  * Also contains the buttons that the user will use to draw and clear that path
  */
-// do I need to extend path/segment/point?
 class RouteEdges extends Component<EdgeListProps, EdgeState> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             drawEdges: [],
-            buildingNames: [],
+            buildingFullNames: [],
+            buildingShortNames: [],
             startBuilding: "",
             endBuilding: ""
         }
@@ -55,12 +56,13 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
     }
 
     render() {
-        // WHAT DOES UNIQUE KEY VALUE PAIRS LOOK LIKE?
         // creates all the options for the selection
         let list: any[] = [];
-        list.push(<option>Select</option>)
-        for(let i = 0; i < this.state.buildingNames.length; i++){
-            list.push(<option value={this.state.buildingNames[i]}>{this.state.buildingNames[i]}</option>)
+        list.push(<option key={0}> Select</option>)
+        for(let i = 0; i < this.state.buildingFullNames.length; i++){
+            // displayed string on the dropdown menu has both the short name and long name
+            list.push(<option key={i+1} value={this.state.buildingShortNames[i]}>
+                {this.state.buildingFullNames[i]}</option>)
         }
         return (
             <div id="edge-list">
@@ -108,7 +110,6 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
         this.setState({endBuilding: e});
     }
 
-
     /**
      * clears the page to reset everything to their initial states
      */
@@ -118,7 +119,7 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
     }
 
     /**
-     * gets all the buildings that exist on campus as a list of their short names
+     * gets all the buildings that exist on campus with both their short and long names
      */
     getBuildings = async () => {
         try{
@@ -126,23 +127,28 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
             if (!response.ok){
                 alert("The status is wrong! Expected: 200, Was: " + response.status);
                 return;
+                // return if something goes wrong
             }
             let object = (await response.json()) as string[];
             if (object === undefined){
                 alert("json parsing failed!");
+                return;
+                // return if something goes wrong
             }
-            let buildings = Array<string>();
-            for (let i = 0; i < object.length; i++){
-                buildings.push(object[i]);
-                //console.log(object[i])
-            }
-            this.setState({buildingNames: buildings})
+            let buildingFull = Array<string>();
+            let buildingShort = Array<string>();
+            Object.entries(object).forEach(entry => {
+                let key:string = entry[0];
+                let value:string = entry[1];
+                buildingFull.push(key + " (" + value + ")")
+                buildingShort.push(key);
+            })
+            this.setState({buildingFullNames: buildingFull, buildingShortNames: buildingShort})
         } catch(e){
             alert("There was an error contacting the server.");
             console.log(e);
         }
     };
-
 
     /**
      * main function for drawing the lines from given user input
@@ -152,25 +158,24 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
             if (this.state.startBuilding === "" || this.state.endBuilding === "" ||
                     this.state.endBuilding === "Select" || this.state.startBuilding === "Select"){
                 alert("boxes must be filled!")
-                // or I could honestly just clear the lines here or do nothing...hmmm
-                // double check that this doesn't royally screw anything up
                 this.setState({drawEdges: []})
                 this.props.onChange([])
             } else {
-                //console.log(this.state.startBuilding)
-                //console.log(this.state.endBuilding)
                 let response = await fetch('http://localhost:4567/findPath?start=' +
                     this.state.startBuilding + '&end=' + this.state.endBuilding);
                 if (!response.ok) {
                     alert("The status is wrong! Expected: 200, Was: " + response.status);
                     return;
+                    // return if something goes wrong
                 }
                 let object = (await response.json()) as Path;
                 if (object === undefined) {
                     alert("json parsing failed!");
+                    return;
+                    // return if something goes wrong
                 }
-                //console.log(object);
                 let arrayOfMapLines = Array<MapLine>()
+                // creating all the lines to be drawn
                 for (let i = 0; i < object.path.length; i++) {
                     let numEdges = new MapLine({
                         color: "red",
@@ -179,7 +184,6 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
                         x2: object.path[i].end.x,
                         y2: object.path[i].end.y
                     })
-                    //console.log(numEdges);
                     arrayOfMapLines.push(numEdges);
                 }
                 this.setState({drawEdges: arrayOfMapLines})
@@ -190,8 +194,6 @@ class RouteEdges extends Component<EdgeListProps, EdgeState> {
             console.log(e);
         }
     };
-
-
 }
 
 export default RouteEdges;

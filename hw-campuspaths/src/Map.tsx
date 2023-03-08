@@ -30,8 +30,12 @@ interface MapProps {
 
 interface MapState {}
 
+/**
+ * Draws the edges between the buildings that have been obtained from the user onto the map
+ */
 class Map extends Component<MapProps, MapState> {
   render() {
+      // creating an array of all the MapLines for rendering
       const arrayOfEdges: JSX.Element[] = [];
       let current = this.props.edges;
       for (let i = 0; i < current.length; i++){

@@ -28,6 +28,11 @@ import java.util.*;
 public class SparkServer {
 
 
+    /**
+     * Main method to host the server
+     *
+     * @param args the general input
+     */
     public static void main(String[] args) {
         CORSFilter corsFilter = new CORSFilter();
         corsFilter.apply();
@@ -42,7 +47,11 @@ public class SparkServer {
         Spark.get("/buildingNames", new Route(){
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                List<String> buildingShortNames = new ArrayList<>(map.buildingNames().keySet());
+                Map<String,String> buildingShortNames = map.buildingNames();
+                // double check that nothing exploded
+                if (buildingShortNames == null){
+                    Spark.halt(400, "Null pointers cause problems!");
+                }
                 Gson gson = new Gson();
                 String jsonResponse = gson.toJson(buildingShortNames);
                 return jsonResponse;
@@ -52,12 +61,14 @@ public class SparkServer {
         Spark.get("/findPath", new Route(){
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                // don't need error handling because we will have a dropdown box and exactly what input we are giving
+                // don't need extensive error handling because we will have a dropdown box
+                // and exactly what input we are giving
                 String startBuilding = request.queryParams("start");
                 String endBuilding = request.queryParams("end");
                 Path<Point> shortestPath = map.findShortestPath(startBuilding, endBuilding);
-                // not useful error handling?
-                if (startBuilding == null || endBuilding == null || !map.shortNameExists(startBuilding) || !map.shortNameExists(endBuilding) || shortestPath == null){
+                // just double-checking that nothing exploded
+                if (startBuilding == null || endBuilding == null || !map.shortNameExists(startBuilding)
+                        || !map.shortNameExists(endBuilding) || shortestPath == null){
                     Spark.halt(400, "Null pointers cause problems!");
                 }
                 Gson gson = new Gson();
@@ -66,5 +77,4 @@ public class SparkServer {
             }
         });
     }
-
 }
