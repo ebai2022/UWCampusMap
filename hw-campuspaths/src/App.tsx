@@ -32,6 +32,12 @@ class App extends Component<{}, AppState> {
         };
     }
     render() {
+        let paths: any[] = [];
+        for (let i = 0; i < this.state.edgeList.length; i++){
+            paths.push(<p key={i+1}>{i+1}. Walk from ({this.state.edgeList[i].props.x1},
+                {this.state.edgeList[i].props.y1}) to ({this.state.edgeList[i].props.x2},
+                {this.state.edgeList[i].props.y2}) </p>);
+        }
         return (
             <div>
                 <h1 id="app-title">Campus Map!</h1>
@@ -45,6 +51,10 @@ class App extends Component<{}, AppState> {
                         this.setState({edgeList: value});
                     }}
                 />
+                <p>
+                    Take this path to get from your start building to your end building:
+                </p>
+                {paths}
             </div>
         );
     }

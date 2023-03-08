@@ -1,9 +1,13 @@
 CSE 331 Homework Answers:
 
-Your Name:
+Your Name: Ethan Bai
 
 List any additional features or functionality you implemented
 in your CampusPaths application below. Only things listed here
 will be considered for extra credit.
 
-
+My main added feature is showing the user where to walk (only straight line paths)
+to get from their first building to their second building! I also made it so that the
+clear button wipes the path and also resets both of the selection boxes back to "select".
+Also, instead of auto drawing the lines, I added a draw button so that my program will only
+draw the path between two buildings when the user presses the button
